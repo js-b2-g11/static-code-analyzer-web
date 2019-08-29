@@ -1,0 +1,34 @@
+/*
+ * The copyright of this file belongs to Koninklijke Philips N.V., 2019.
+ */
+package com.philips.bootcamp.analyzerweb.model;
+
+import java.io.IOException;
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
+public abstract class Tool {
+
+  protected String filepath;
+
+  public Tool(String filepath) {
+    this.filepath = filepath;
+  }
+
+  public abstract void generateReport() throws IOException;
+
+  public abstract boolean isValidReport();
+
+  public void add(Tool tool) {
+    throw new UnsupportedOperationException("Cannot add tool by default");
+  }
+
+  public void remove(Tool tool) {
+    throw new UnsupportedOperationException("Cannot add tool by default");
+  }
+
+  @Override
+  public abstract String toString();
+}
