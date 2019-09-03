@@ -24,8 +24,8 @@ import lombok.Setter;
 @Setter
 public class CheckstyleReportGenerator extends Tool{
 
-  private String checkstylePath;
-  private String checkstyleRuleset;
+  private final String checkstylePath;
+  private final String checkstyleRuleset;
 
   public CheckstyleReportGenerator(String filepath, String checkstylePath, String checkstyleRuleset) {
     super(filepath);
@@ -86,6 +86,12 @@ public class CheckstyleReportGenerator extends Tool{
       return false;
     }
     return (FileValidator.isValidPath(this.getFilepath()));
+  }
+
+  @Override
+  public String toString() {
+    // TODO Auto-generated method stub
+    return null;
   }
 }
 

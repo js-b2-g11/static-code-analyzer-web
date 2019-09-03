@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeoutException;
 import java.util.regex.Pattern;
-import org.jetbrains.annotations.NotNull;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.zeroturnaround.exec.InvalidExitValueException;
 import org.zeroturnaround.exec.ProcessExecutor;

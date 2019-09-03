@@ -13,11 +13,15 @@ public abstract class Tool {
 
   protected String filepath;
 
+  public String getFilepath() {
+    return filepath;
+  }
+
   public Tool(String filepath) {
     this.filepath = filepath;
   }
 
-  public abstract void generateReport() throws IOException;
+  public abstract StringBuilder generateReport() throws IOException;
 
   public abstract boolean isValidReport();
 

@@ -84,4 +84,10 @@ public class PmdReportGenerator extends Tool {
     }
     return (FileValidator.isValidPath(this.getFilepath()));
   }
+
+  @Override
+  public String toString() {
+    // TODO Auto-generated method stub
+    return null;
+  }
 }
