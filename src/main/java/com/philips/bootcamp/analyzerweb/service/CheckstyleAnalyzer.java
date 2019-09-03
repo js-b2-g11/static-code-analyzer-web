@@ -38,7 +38,6 @@ public class CheckstyleAnalyzer extends Tool{
     String s = null;
     if (isValidReport()) {
       final String[] cmdCommand = {"java", "-jar", checkstylePath, "-c", checkstyleRuleset, filepath};
-      //      System.out.println(CommandLine.runShellCommand(cmdCommand));
       final Runtime rt = Runtime.getRuntime();
       final Process checkstyleProcess = rt.exec(cmdCommand);
       final BufferedReader stdInput = new BufferedReader(new InputStreamReader(checkstyleProcess.getInputStream()));

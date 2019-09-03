@@ -9,13 +9,13 @@
 	
 		<ul>
 			<c:forEach var="listValue" items="${lists}">
-			<c:url value = "cs/" var="url">
+			<c:url value = "api/pmd/" var="url">
 				
 				<c:param name="path" value="${listValue}"></c:param>
 				
 			</c:url>
 			
-			<li><a href="${url}" onclick="return myFunction();">${listValue}</li>
+			<li><a href="${url}" onclick="return myFunction();">${listValue}</a></li>
 			</c:forEach>
 		</ul>
 	</c:if>	
