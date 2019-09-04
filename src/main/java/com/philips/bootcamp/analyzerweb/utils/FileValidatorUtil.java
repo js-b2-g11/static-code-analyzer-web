@@ -5,8 +5,7 @@ package com.philips.bootcamp.analyzerweb.utils;
 
 import java.io.File;
 
-public class FileValidator {
-
+public class FileValidatorUtil {
 
   public static boolean isValidPath(final String filepath) {
 

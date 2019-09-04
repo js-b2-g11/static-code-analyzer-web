@@ -7,35 +7,43 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.philips.bootcamp.analyzerweb.service.CheckstyleAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.PmdAnalyzer;
 import com.philips.bootcamp.analyzerweb.utils.JavaFileLister;
-import com.philips.bootcamp.analyzerweb.utils.PathDecoder;
+import com.philips.bootcamp.analyzerweb.utils.PathDecoderUtil;
 
 
 @RestController
 public class StaticCodeAnalyzerController {
 
-  @RequestMapping(value="/api/cs/",method = RequestMethod.GET)
+  @GetMapping("/api/cs/")
   public ResponseEntity<StringBuilder> genCheckstyle(@RequestParam("path")final String path)throws IOException{
-    final String filepath = PathDecoder.decodeURI(path);
-    final CheckstyleAnalyzer checkStyle = new CheckstyleAnalyzer(filepath,"C:/Checkstyle/checkstyle-8.22-all.jar","/google_checks.xml");
-    return new ResponseEntity<>(checkStyle.generateReport(),HttpStatus.OK);
+    final String filepath = PathDecoderUtil.decodeURI(path);
+    try {
+
+      final CheckstyleAnalyzer checkStyle = new CheckstyleAnalyzer(filepath,"C:/Checkstyle/checkstyle-8.22-all.jar","/google_checks.xml");
+      return new ResponseEntity<>(checkStyle.generateReport(),HttpStatus.OK);
+    } catch (final Exception e) {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
   }
 
-  @RequestMapping(value="/api/pmd/",method = RequestMethod.GET)
+  @GetMapping("/api/pmd/")
   public ResponseEntity<StringBuilder> genPmd(@RequestParam("path")final String path)throws IOException{
-    final String filepath = PathDecoder.decodeURI(path);
-    final PmdAnalyzer pmd = new PmdAnalyzer(filepath,"category/java/codestyle.xml");
-    return new ResponseEntity<>(pmd.generateReport(),HttpStatus.OK);
+    final String filepath = PathDecoderUtil.decodeURI(path);
+    try {
+      final PmdAnalyzer pmd = new PmdAnalyzer(filepath,"category/java/codestyle.xml");
+      return new ResponseEntity<>(pmd.generateReport(),HttpStatus.OK);
+    } catch (final Exception e) {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
   }
 
-  @RequestMapping(value = "/api", method = RequestMethod.GET)
+  @GetMapping("/api")
   public ModelAndView getFiles(@RequestParam("path")final String path)throws IOException{
     final JavaFileLister listFiles = new JavaFileLister();
     final ModelAndView model = new ModelAndView("index");

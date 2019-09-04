@@ -17,10 +17,10 @@ import org.zeroturnaround.exec.InvalidExitValueException;
 import org.zeroturnaround.exec.ProcessExecutor;
 import org.zeroturnaround.exec.ProcessResult;
 
-public class CommandLine {
+public class CommandLineUtil{
 
-  private static final Logger LOGGER = getLogger(CommandLine.class);
-  public static String runShellCommand(String... command) {
+  private static final Logger LOGGER = getLogger(CommandLineUtil.class);
+  public static String runShellCommand(final String... command) {
 
     final String joinedCommand = String.join(" ", command);
     LOGGER.debug("Executing shell command: `{}`", joinedCommand);
@@ -39,20 +39,20 @@ public class CommandLine {
     }
   }
 
-  public static boolean executableExists(String executable) {
-
+  public static boolean executableExists(final String executable) {
+    boolean exists = false;
     final File directFile = new File(executable);
     if (directFile.exists() && directFile.canExecute()) {
-      return true;
+      exists = true;
     }
 
     for (final String pathString : getSystemPath()) {
       final Path path = Paths.get(pathString);
       if (Files.exists(path.resolve(executable)) && Files.isExecutable(path.resolve(executable))) {
-        return true;
+        exists= true;
       }
     }
-    return false;
+    return exists;
   }
 
   @NotNull
@@ -61,7 +61,7 @@ public class CommandLine {
   }
 
   private static class ShellCommandException extends RuntimeException {
-    public ShellCommandException(String message, Exception e) {
+    public ShellCommandException(final String message,final Exception e) {
       super(message, e);
     }
   }

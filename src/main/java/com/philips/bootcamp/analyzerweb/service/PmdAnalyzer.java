@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import com.philips.bootcamp.analyzerweb.model.AbstractTool;
 import com.philips.bootcamp.analyzerweb.utils.ConfigFileReader;
-import com.philips.bootcamp.analyzerweb.utils.FileValidator;
+import com.philips.bootcamp.analyzerweb.utils.FileValidatorUtil;
 
 public class PmdAnalyzer extends AbstractTool{
 
@@ -54,7 +54,7 @@ public class PmdAnalyzer extends AbstractTool{
       flag = false;
     }
     else {
-      flag = FileValidator.isValidPath(this.getFilepath());
+      flag = FileValidatorUtil.isValidPath(this.getFilepath());
     }
     return flag;
   }

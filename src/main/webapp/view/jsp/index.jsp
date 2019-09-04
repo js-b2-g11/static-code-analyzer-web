@@ -9,7 +9,7 @@
 	
 		<ul>
 			<c:forEach var="listValue" items="${lists}">
-			<c:url value = "api/pmd/" var="url">
+			<c:url value = "pmd/" var="url">
 				
 				<c:param name="path" value="${listValue}"></c:param>
 				

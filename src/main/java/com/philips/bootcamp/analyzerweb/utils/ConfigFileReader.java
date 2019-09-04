@@ -15,9 +15,9 @@ public class ConfigFileReader {
 
   private static ConfigFileReader instance = null;
 
-  private static final Properties properties;
+  private static final Properties PROPERITES;
 
-  private static final String CONFIGURATION_FILE = "/application.properties";
+  private static final String CONFIG_FILE = "/application.properties";
 
   private ConfigFileReader() {
 
@@ -31,17 +31,17 @@ public class ConfigFileReader {
   }
 
   static {
-    properties = new Properties();
-    try (InputStream inputStream = Configuration.class.getResourceAsStream(CONFIGURATION_FILE)) {
-      properties.load(inputStream);
+    PROPERITES = new Properties();
+    try (InputStream inputStream = Configuration.class.getResourceAsStream(CONFIG_FILE)) {
+      PROPERITES.load(inputStream);
     } catch (final IOException e) {
-      throw new RuntimeException("Failed to read file " + CONFIGURATION_FILE, e);
+      throw new RuntimeException("Failed to read file " + CONFIG_FILE, e);
     }
   }
 
   public static Map<String, String> getConfiguration() {
     // ugly workaround to get String as generics
-    final Map temp = properties;
+    final Map temp = PROPERITES;
     @SuppressWarnings("unchecked")
     final Map<String, String> map = new HashMap<>(temp);
     // prevent the returned configuration from being modified
@@ -49,8 +49,8 @@ public class ConfigFileReader {
   }
 
 
-  public String getConfigurationValue(String key) {
-    return properties.getProperty(key);
+  public String getConfigurationValue(final String key) {
+    return PROPERITES.getProperty(key);
   }
 
 }

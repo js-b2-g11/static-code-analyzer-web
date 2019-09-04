@@ -13,9 +13,9 @@ import java.util.stream.Stream;
 
 public class JavaFileLister {
 
-  public List<String> javaFilefilter(String dir){
+  public List<String> javaFilefilter(final String dir){
     List<String> result = null;
-    try (final Stream<Path> walk = Files.walk(Paths.get(dir))) {
+    try (Stream<Path> walk = Files.walk(Paths.get(dir))) {
 
       result = walk.map(x -> x.toString())
           .filter(f -> f.endsWith(".java")).collect(Collectors.toList());
