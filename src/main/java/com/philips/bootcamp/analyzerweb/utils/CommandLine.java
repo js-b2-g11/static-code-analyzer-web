@@ -79,7 +79,7 @@ public class CommandLine {
     return System.getenv("PATH").split(Pattern.quote(File.pathSeparator));
   }
 
-  private static class ShellCommandException extends RuntimeException {
+  public static class ShellCommandException extends RuntimeException {
     public ShellCommandException(String message, Exception e) {
       super(message, e);
     }

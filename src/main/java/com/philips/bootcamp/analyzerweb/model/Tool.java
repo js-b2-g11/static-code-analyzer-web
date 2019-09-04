@@ -4,6 +4,9 @@
 package com.philips.bootcamp.analyzerweb.model;
 
 import java.io.IOException;
+
+import com.philips.bootcamp.analyzerweb.utils.CommandLine.ShellCommandException;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +24,7 @@ public abstract class Tool {
     this.filepath = filepath;
   }
 
-  public abstract String generateReport() throws IOException;
+  public abstract String generateReport() throws ShellCommandException;
 
   public abstract boolean isValidReport();
 

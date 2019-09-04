@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.philips.bootcamp.analyzerweb.service.CheckstyleAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.IntegratedAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.PmdAnalyzer;
+import com.philips.bootcamp.analyzerweb.utils.CommandLine.ShellCommandException;
 import com.philips.bootcamp.analyzerweb.utils.JavaFileLister;
 import com.philips.bootcamp.analyzerweb.utils.Values;
 
@@ -23,11 +24,15 @@ import com.philips.bootcamp.analyzerweb.utils.Values;
 public class StaticCodeAnalyzerController {
 
   @RequestMapping(value="/api/cs/",method = RequestMethod.GET)
-  public ResponseEntity<String> genCheckstyle(@RequestParam("path") String path)throws IOException{
+  public ResponseEntity<String> genCheckstyle(@RequestParam("path") String path) throws IOException{
     final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
     final CheckstyleAnalyzer cs = new CheckstyleAnalyzer(filepath, Values.CHECKSTYLE_PATH, 
-    		Values.CHECKSTYLE_RULESET);
-    return new ResponseEntity<>(cs.generateReport() ,HttpStatus.OK);
+    		Values.CHECKSTYLE_RULESET);    
+    try {
+		return new ResponseEntity<>(cs.generateReport() ,HttpStatus.OK);
+	} catch (ShellCommandException e) {
+		return new ResponseEntity<>("Error: file not found" ,HttpStatus.NOT_FOUND);
+	}
   }
 
   @RequestMapping(value="/api/pmd/",method = RequestMethod.GET)
