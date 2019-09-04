@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.philips.bootcamp.analyzerweb.service.CheckstyleAnalyzer;
+import com.philips.bootcamp.analyzerweb.service.IntegratedAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.PmdAnalyzer;
 import com.philips.bootcamp.analyzerweb.utils.JavaFileLister;
+import com.philips.bootcamp.analyzerweb.utils.Values;
 
 
 @RestController
@@ -23,15 +25,28 @@ public class StaticCodeAnalyzerController {
   @RequestMapping(value="/api/cs/",method = RequestMethod.GET)
   public ResponseEntity<String> genCheckstyle(@RequestParam("path") String path)throws IOException{
     final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
-    final CheckstyleAnalyzer cs = CheckstyleAnalyzer.getObjectFromConfigFile();
+    final CheckstyleAnalyzer cs = new CheckstyleAnalyzer(filepath, Values.CHECKSTYLE_PATH, 
+    		Values.CHECKSTYLE_RULESET);
     return new ResponseEntity<>(cs.generateReport() ,HttpStatus.OK);
   }
 
   @RequestMapping(value="/api/pmd/",method = RequestMethod.GET)
   public ResponseEntity<String> genPmd(@RequestParam("path") String path)throws IOException{
     final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
-    final PmdAnalyzer pmd = new PmdAnalyzer(filepath,"category/java/codestyle.xml");
+    final PmdAnalyzer pmd = new PmdAnalyzer(filepath, Values.PMD_RULESET);
     return new ResponseEntity<>(pmd.generateReport(),HttpStatus.OK);
+  }
+  
+  @RequestMapping(value="/api/all/",method = RequestMethod.GET)
+  public ResponseEntity<String> genIntegratedReport(@RequestParam("path") String path)throws IOException{
+    final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
+    final CheckstyleAnalyzer checkstyleAnalyzer = new CheckstyleAnalyzer(filepath, Values.CHECKSTYLE_PATH, 
+    		Values.CHECKSTYLE_RULESET);
+    final PmdAnalyzer pmdAnalyzer = new PmdAnalyzer(filepath, Values.PMD_RULESET);
+    IntegratedAnalyzer integratedAnalyzer = new IntegratedAnalyzer(filepath);
+    integratedAnalyzer.add(checkstyleAnalyzer);
+    integratedAnalyzer.add(pmdAnalyzer);
+    return new ResponseEntity<>(integratedAnalyzer.generateReport() ,HttpStatus.OK);
   }
 
   @RequestMapping(value = "/api", method = RequestMethod.GET)
