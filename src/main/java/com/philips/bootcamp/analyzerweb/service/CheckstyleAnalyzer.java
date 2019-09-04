@@ -3,17 +3,12 @@
  */
 package com.philips.bootcamp.analyzerweb.service;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import com.philips.bootcamp.analyzerweb.model.Tool;
+import com.philips.bootcamp.analyzerweb.utils.CommandLine;
 import com.philips.bootcamp.analyzerweb.utils.ConfigFileReader;
 import com.philips.bootcamp.analyzerweb.utils.FileValidator;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 public class CheckstyleAnalyzer extends Tool{
 
   private final String checkstylePath;
@@ -33,25 +28,13 @@ public class CheckstyleAnalyzer extends Tool{
   }
 
   @Override
-  public StringBuilder generateReport() throws IOException {
-    final StringBuilder sbf = new StringBuilder();
-    String s = null;
+  public String generateReport() throws IOException {
     if (isValidReport()) {
       final String[] cmdCommand = {"java", "-jar", checkstylePath, "-c", checkstyleRuleset, filepath};
-      //      System.out.println(CommandLine.runShellCommand(cmdCommand));
-      final Runtime rt = Runtime.getRuntime();
-      final Process checkstyleProcess = rt.exec(cmdCommand);
-      final BufferedReader stdInput = new BufferedReader(new InputStreamReader(checkstyleProcess.getInputStream()));
-      while((s=stdInput.readLine())!=null) {
-        sbf.append("\n");
-        sbf.append(s);
-      }
+      return CommandLine.runShellCommand(cmdCommand);
+    } else {
+      return "File error: file not found or incorrect path";
     }
-    else
-    {
-      sbf.append("File error: file not found or incorrect path");
-    }
-    return sbf;
   }
 
   @Override

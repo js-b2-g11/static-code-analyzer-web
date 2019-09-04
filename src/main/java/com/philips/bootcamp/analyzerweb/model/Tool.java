@@ -21,7 +21,7 @@ public abstract class Tool {
     this.filepath = filepath;
   }
 
-  public abstract StringBuilder generateReport() throws IOException;
+  public abstract String generateReport() throws IOException;
 
   public abstract boolean isValidReport();
 

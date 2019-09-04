@@ -3,10 +3,9 @@
  */
 package com.philips.bootcamp.analyzerweb.service;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import com.philips.bootcamp.analyzerweb.model.Tool;
+import com.philips.bootcamp.analyzerweb.utils.CommandLine;
 import com.philips.bootcamp.analyzerweb.utils.ConfigFileReader;
 import com.philips.bootcamp.analyzerweb.utils.FileValidator;
 
@@ -26,24 +25,13 @@ public class PmdAnalyzer extends Tool{
   }
 
   @Override
-  public StringBuilder generateReport() throws IOException {
-    final StringBuilder sbf = new StringBuilder();
+  public String generateReport() throws IOException {
     if (isValidReport()) {
-      String s = null;
-      final String[] cmdCommand = {"pmd.bat", "-d", filepath, "-f", "html", "-R", pmdRuleset, "-failOnViolation", "false"};
-      final Runtime rt = Runtime.getRuntime();
-      final Process checkstyleProcess = rt.exec(cmdCommand);
-      final BufferedReader stdInput = new BufferedReader(new InputStreamReader(checkstyleProcess.getInputStream()));
-      while((s=stdInput.readLine())!=null) {
-        sbf.append("\n");
-        sbf.append(s);
-
-      }
+      final String[] cmdCommand = {"pmd.bat", "-d", filepath, "-R", pmdRuleset, "-failOnViolation", "false"};
+      return CommandLine.runShellCommand(cmdCommand);
+    } else {
+      return "File error: file not found or incorrect path";
     }
-    else {
-      sbf.append("File error: file not found or incorrect path");
-    }
-    return sbf;
   }
 
   @Override

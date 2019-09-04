@@ -1,5 +1,5 @@
 /*
- * The copyright of this file belongs to Koninklijke Philips N.V., 2019.
+cha * The copyright of this file belongs to Koninklijke Philips N.V., 2019.
  */
 package com.philips.bootcamp.analyzerweb.controller;
 
@@ -21,14 +21,14 @@ import com.philips.bootcamp.analyzerweb.utils.JavaFileLister;
 public class StaticCodeAnalyzerController {
 
   @RequestMapping(value="/api/cs/",method = RequestMethod.GET)
-  public ResponseEntity<StringBuilder> genCheckstyle(@RequestParam("path") String path)throws IOException{
+  public ResponseEntity<String> genCheckstyle(@RequestParam("path") String path)throws IOException{
     final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
-    final CheckstyleAnalyzer cs = new CheckstyleAnalyzer(filepath,"C:/Checkstyle/checkstyle-8.22-all.jar","/google_checks.xml");
-    return new ResponseEntity<>(cs.generateReport(),HttpStatus.OK);
+    final CheckstyleAnalyzer cs = CheckstyleAnalyzer.getObjectFromConfigFile();
+    return new ResponseEntity<>(cs.generateReport() ,HttpStatus.OK);
   }
 
   @RequestMapping(value="/api/pmd/",method = RequestMethod.GET)
-  public ResponseEntity<StringBuilder> genPmd(@RequestParam("path") String path)throws IOException{
+  public ResponseEntity<String> genPmd(@RequestParam("path") String path)throws IOException{
     final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
     final PmdAnalyzer pmd = new PmdAnalyzer(filepath,"category/java/codestyle.xml");
     return new ResponseEntity<>(pmd.generateReport(),HttpStatus.OK);
