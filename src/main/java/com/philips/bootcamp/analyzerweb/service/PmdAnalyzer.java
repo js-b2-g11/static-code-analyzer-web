@@ -6,15 +6,16 @@ package com.philips.bootcamp.analyzerweb.service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import com.philips.bootcamp.analyzerweb.model.Tool;
+import com.philips.bootcamp.analyzerweb.model.AbstractTool;
 import com.philips.bootcamp.analyzerweb.utils.ConfigFileReader;
 import com.philips.bootcamp.analyzerweb.utils.FileValidator;
 
-public class PmdAnalyzer extends Tool{
+public class PmdAnalyzer extends AbstractTool{
 
-  String pmdRuleset;
 
-  public PmdAnalyzer(String filepath, String pmdRuleset) {
+  private final String pmdRuleset;
+
+  public PmdAnalyzer(final String filepath,final String pmdRuleset) {
     super(filepath);
     this.pmdRuleset = pmdRuleset;
   }
@@ -29,14 +30,14 @@ public class PmdAnalyzer extends Tool{
   public StringBuilder generateReport() throws IOException {
     final StringBuilder sbf = new StringBuilder();
     if (isValidReport()) {
-      String s = null;
+      String consoleOutput = null;
       final String[] cmdCommand = {"pmd.bat", "-d", filepath, "-f", "html", "-R", pmdRuleset, "-failOnViolation", "false"};
-      final Runtime rt = Runtime.getRuntime();
-      final Process checkstyleProcess = rt.exec(cmdCommand);
+      final Runtime runTime = Runtime.getRuntime();
+      final Process checkstyleProcess = runTime.exec(cmdCommand);
       final BufferedReader stdInput = new BufferedReader(new InputStreamReader(checkstyleProcess.getInputStream()));
-      while((s=stdInput.readLine())!=null) {
+      while((consoleOutput=stdInput.readLine())!=null) {
         sbf.append("\n");
-        sbf.append(s);
+        sbf.append(consoleOutput);
 
       }
     }
@@ -48,10 +49,14 @@ public class PmdAnalyzer extends Tool{
 
   @Override
   public boolean isValidReport() {
+    boolean flag = false;
     if (this.getFilepath() == null || this.getFilepath().equals("")) {
-      return false;
+      flag = false;
     }
-    return (FileValidator.isValidPath(this.getFilepath()));
+    else {
+      flag = FileValidator.isValidPath(this.getFilepath());
+    }
+    return flag;
   }
 
   @Override

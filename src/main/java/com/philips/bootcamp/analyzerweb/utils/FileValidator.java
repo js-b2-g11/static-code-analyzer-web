@@ -8,7 +8,7 @@ import java.io.File;
 public class FileValidator {
 
 
-  public static boolean isValidPath(String filepath) {
+  public static boolean isValidPath(final String filepath) {
 
     boolean exists = false;
     try

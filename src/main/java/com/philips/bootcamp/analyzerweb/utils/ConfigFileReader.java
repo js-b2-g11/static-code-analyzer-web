@@ -42,7 +42,8 @@ public class ConfigFileReader {
   public static Map<String, String> getConfiguration() {
     // ugly workaround to get String as generics
     final Map temp = properties;
-    final Map<String, String> map = new HashMap<String, String>(temp);
+    @SuppressWarnings("unchecked")
+    final Map<String, String> map = new HashMap<>(temp);
     // prevent the returned configuration from being modified
     return Collections.unmodifiableMap(map);
   }

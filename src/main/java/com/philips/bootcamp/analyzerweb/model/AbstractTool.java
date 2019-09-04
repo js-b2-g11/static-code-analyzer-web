@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public abstract class Tool {
+public abstract class AbstractTool {
 
   protected String filepath;
 
@@ -17,7 +17,7 @@ public abstract class Tool {
     return filepath;
   }
 
-  public Tool(String filepath) {
+  public AbstractTool(final String filepath) {
     this.filepath = filepath;
   }
 
@@ -25,11 +25,11 @@ public abstract class Tool {
 
   public abstract boolean isValidReport();
 
-  public void add(Tool tool) {
+  public void add(final AbstractTool tool) {
     throw new UnsupportedOperationException("Cannot add tool by default");
   }
 
-  public void remove(Tool tool) {
+  public void remove(final AbstractTool tool) {
     throw new UnsupportedOperationException("Cannot add tool by default");
   }
 

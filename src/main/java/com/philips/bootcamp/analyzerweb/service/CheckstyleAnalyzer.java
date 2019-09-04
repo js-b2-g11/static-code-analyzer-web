@@ -6,7 +6,7 @@ package com.philips.bootcamp.analyzerweb.service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import com.philips.bootcamp.analyzerweb.model.Tool;
+import com.philips.bootcamp.analyzerweb.model.AbstractTool;
 import com.philips.bootcamp.analyzerweb.utils.ConfigFileReader;
 import com.philips.bootcamp.analyzerweb.utils.FileValidator;
 import lombok.Getter;
@@ -14,12 +14,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CheckstyleAnalyzer extends Tool{
+public class CheckstyleAnalyzer extends AbstractTool{
 
   private final String checkstylePath;
   private final String checkstyleRuleset;
 
-  public CheckstyleAnalyzer(String filepath, String checkstylePath, String checkstyleRuleset) {
+  public CheckstyleAnalyzer(final String filepath, final String checkstylePath,final String checkstyleRuleset) {
     super(filepath);
     this.checkstylePath = checkstylePath;
     this.checkstyleRuleset = checkstyleRuleset;
@@ -35,15 +35,15 @@ public class CheckstyleAnalyzer extends Tool{
   @Override
   public StringBuilder generateReport() throws IOException {
     final StringBuilder sbf = new StringBuilder();
-    String s = null;
+    String consoleOutput = null;
     if (isValidReport()) {
       final String[] cmdCommand = {"java", "-jar", checkstylePath, "-c", checkstyleRuleset, filepath};
-      final Runtime rt = Runtime.getRuntime();
-      final Process checkstyleProcess = rt.exec(cmdCommand);
+      final Runtime runTime = Runtime.getRuntime();
+      final Process checkstyleProcess = runTime.exec(cmdCommand);
       final BufferedReader stdInput = new BufferedReader(new InputStreamReader(checkstyleProcess.getInputStream()));
-      while((s=stdInput.readLine())!=null) {
+      while((consoleOutput=stdInput.readLine())!=null) {
         sbf.append("\n");
-        sbf.append(s);
+        sbf.append(consoleOutput);
       }
     }
     else
@@ -55,10 +55,15 @@ public class CheckstyleAnalyzer extends Tool{
 
   @Override
   public boolean isValidReport() {
+    boolean flag = false;
     if (this.getFilepath() == null || this.getFilepath().equals("")) {
-      return false;
+      flag = false;
     }
-    return (FileValidator.isValidPath(this.getFilepath()));
+    else {
+      flag =  FileValidator.isValidPath(this.getFilepath());
+    }
+    return flag;
+
   }
 
   @Override
