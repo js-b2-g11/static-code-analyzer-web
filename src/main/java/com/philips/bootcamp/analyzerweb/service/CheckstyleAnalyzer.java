@@ -3,10 +3,9 @@
  */
 package com.philips.bootcamp.analyzerweb.service;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import com.philips.bootcamp.analyzerweb.model.AbstractTool;
+import com.philips.bootcamp.analyzerweb.utils.CommandLineUtil;
 import com.philips.bootcamp.analyzerweb.utils.ConfigFileReader;
 import com.philips.bootcamp.analyzerweb.utils.FileValidatorUtil;
 import lombok.Getter;
@@ -33,24 +32,17 @@ public class CheckstyleAnalyzer extends AbstractTool{
   }
 
   @Override
-  public StringBuilder generateReport() throws IOException {
-    final StringBuilder sbf = new StringBuilder();
-    String consoleOutput = null;
-    if (isValidReport()) {
+  public String generateReport() throws IOException {
+
+    String cmdOutput = null;
+    try {
       final String[] cmdCommand = {"java", "-jar", checkstylePath, "-c", checkstyleRuleset, filepath};
-      final Runtime runTime = Runtime.getRuntime();
-      final Process checkstyleProcess = runTime.exec(cmdCommand);
-      final BufferedReader stdInput = new BufferedReader(new InputStreamReader(checkstyleProcess.getInputStream()));
-      while((consoleOutput=stdInput.readLine())!=null) {
-        sbf.append("\n");
-        sbf.append(consoleOutput);
-      }
+      cmdOutput = CommandLineUtil.runShellCommand(cmdCommand);
+    } catch (final Exception e) {
+      e.printStackTrace();
     }
-    else
-    {
-      sbf.append("File error: file not found or incorrect path");
-    }
-    return sbf;
+
+    return cmdOutput;
   }
 
   @Override
@@ -63,7 +55,6 @@ public class CheckstyleAnalyzer extends AbstractTool{
       flag =  FileValidatorUtil.isValidPath(this.getFilepath());
     }
     return flag;
-
   }
 
   @Override

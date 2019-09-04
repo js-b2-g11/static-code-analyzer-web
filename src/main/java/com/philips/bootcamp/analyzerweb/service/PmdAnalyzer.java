@@ -3,10 +3,9 @@
  */
 package com.philips.bootcamp.analyzerweb.service;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import com.philips.bootcamp.analyzerweb.model.AbstractTool;
+import com.philips.bootcamp.analyzerweb.utils.CommandLineUtil;
 import com.philips.bootcamp.analyzerweb.utils.ConfigFileReader;
 import com.philips.bootcamp.analyzerweb.utils.FileValidatorUtil;
 
@@ -27,24 +26,16 @@ public class PmdAnalyzer extends AbstractTool{
   }
 
   @Override
-  public StringBuilder generateReport() throws IOException {
-    final StringBuilder sbf = new StringBuilder();
-    if (isValidReport()) {
-      String consoleOutput = null;
-      final String[] cmdCommand = {"pmd.bat", "-d", filepath, "-f", "html", "-R", pmdRuleset, "-failOnViolation", "false"};
-      final Runtime runTime = Runtime.getRuntime();
-      final Process checkstyleProcess = runTime.exec(cmdCommand);
-      final BufferedReader stdInput = new BufferedReader(new InputStreamReader(checkstyleProcess.getInputStream()));
-      while((consoleOutput=stdInput.readLine())!=null) {
-        sbf.append("\n");
-        sbf.append(consoleOutput);
+  public String generateReport() throws IOException {
+    String cmdOuput = null;
 
-      }
+    try {
+      final String[] cmdCommand = {"pmd.bat", "-d", filepath, "-f", "html", "-R", pmdRuleset, "-failOnViolation", "false"};
+      cmdOuput =  CommandLineUtil.runShellCommand(cmdCommand);
+    } catch (final Exception e) {
+      e.printStackTrace();
     }
-    else {
-      sbf.append("File error: file not found or incorrect path");
-    }
-    return sbf;
+    return cmdOuput;
   }
 
   @Override

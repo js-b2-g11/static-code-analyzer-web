@@ -11,4 +11,5 @@ public class ValuesUtil {
   public static final String CS_RULESET = "/google_checks.xml";
   public static final String CS_CMD = "cmd /c java -jar ";
 
+  public static final String TEST_VALID_PATH="C:\\BootCampProject\\static-code-analyzer\\helloworld";
 }

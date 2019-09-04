@@ -9,6 +9,10 @@ import lombok.Setter;
 
 @Setter
 @Getter
+/*
+ * The copyright of this file belongs to Koninklijke Philips N.V., 2019.
+ */
+
 public abstract class AbstractTool {
 
   protected String filepath;
@@ -17,11 +21,11 @@ public abstract class AbstractTool {
     return filepath;
   }
 
-  public AbstractTool(final String filepath) {
+  public AbstractTool(String filepath) {
     this.filepath = filepath;
   }
 
-  public abstract StringBuilder generateReport() throws IOException;
+  public abstract String generateReport() throws IOException;
 
   public abstract boolean isValidReport();
 
@@ -36,3 +40,4 @@ public abstract class AbstractTool {
   @Override
   public abstract String toString();
 }
+

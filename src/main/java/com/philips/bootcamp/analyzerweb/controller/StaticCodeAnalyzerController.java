@@ -15,17 +15,17 @@ import com.philips.bootcamp.analyzerweb.service.CheckstyleAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.PmdAnalyzer;
 import com.philips.bootcamp.analyzerweb.utils.JavaFileLister;
 import com.philips.bootcamp.analyzerweb.utils.PathDecoderUtil;
+import com.philips.bootcamp.analyzerweb.utils.ValuesUtil;;
 
 
 @RestController
 public class StaticCodeAnalyzerController {
 
   @GetMapping("/api/cs/")
-  public ResponseEntity<StringBuilder> genCheckstyle(@RequestParam("path")final String path)throws IOException{
+  public ResponseEntity<String> genCheckstyle(@RequestParam("path")final String path)throws IOException{
     final String filepath = PathDecoderUtil.decodeURI(path);
     try {
-
-      final CheckstyleAnalyzer checkStyle = new CheckstyleAnalyzer(filepath,"C:/Checkstyle/checkstyle-8.22-all.jar","/google_checks.xml");
+      final CheckstyleAnalyzer checkStyle = new CheckstyleAnalyzer(filepath,ValuesUtil.CS_PATH,ValuesUtil.CS_RULESET);
       return new ResponseEntity<>(checkStyle.generateReport(),HttpStatus.OK);
     } catch (final Exception e) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -33,10 +33,10 @@ public class StaticCodeAnalyzerController {
   }
 
   @GetMapping("/api/pmd/")
-  public ResponseEntity<StringBuilder> genPmd(@RequestParam("path")final String path)throws IOException{
+  public ResponseEntity<String> genPmd(@RequestParam("path")final String path)throws IOException{
     final String filepath = PathDecoderUtil.decodeURI(path);
     try {
-      final PmdAnalyzer pmd = new PmdAnalyzer(filepath,"category/java/codestyle.xml");
+      final PmdAnalyzer pmd = new PmdAnalyzer(filepath,ValuesUtil.PMD_RULESET);
       return new ResponseEntity<>(pmd.generateReport(),HttpStatus.OK);
     } catch (final Exception e) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);

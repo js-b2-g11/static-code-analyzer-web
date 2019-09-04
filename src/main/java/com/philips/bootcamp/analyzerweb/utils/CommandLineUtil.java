@@ -24,19 +24,19 @@ public class CommandLineUtil{
 
     final String joinedCommand = String.join(" ", command);
     LOGGER.debug("Executing shell command: `{}`", joinedCommand);
-
+    ProcessResult result=null;
     try {
-      ProcessResult result;
+
       result = new ProcessExecutor()
           .command(command)
           .readOutput(true)
           .exitValueNormal()
           .execute();
 
-      return result.outputUTF8().trim();
     } catch (IOException | InterruptedException | TimeoutException | InvalidExitValueException e) {
       throw new ShellCommandException("Exception when executing " + joinedCommand, e);
     }
+    return result.outputUTF8().trim();
   }
 
   public static boolean executableExists(final String executable) {
