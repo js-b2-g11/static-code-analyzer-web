@@ -4,6 +4,7 @@
 package com.philips.bootcamp.analyzerweb;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -16,10 +17,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.zeroturnaround.exec.InvalidExitValueException;
 
 import com.philips.bootcamp.analyzerweb.service.CheckstyleAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.IntegratedAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.PmdAnalyzer;
+import com.philips.bootcamp.analyzerweb.utils.CommandLine;
 import com.philips.bootcamp.analyzerweb.utils.PathEncoder;
 import com.philips.bootcamp.analyzerweb.utils.Values;
 
@@ -69,7 +72,7 @@ public class AnalyzerWebApplicationTests {
 		assertEquals(404, result.getStatusCodeValue());
 	}
 
-	@Test(expected = RuntimeException.class)
+	@Test(expected = CommandLine.ShellCommandException.class)
 	public void generateReport_CheckstyleAnalyzer_InvalidFilePath_ExceptionThrown() {
 		CheckstyleAnalyzer checkstyleTool = new CheckstyleAnalyzer(Values.TEST_INVALID_FILE_PATH, Values.CHECKSTYLE_PATH,
 				Values.CHECKSTYLE_RULESET);
@@ -91,5 +94,20 @@ public class AnalyzerWebApplicationTests {
 		integratedAnalyzer.add(checkstyleTool);
 		integratedAnalyzer.add(pmdTool);
 		integratedAnalyzer.generateReport();
+	}
+	
+	@Test
+	public void generateReport_CheckstyleAnalyzer_ValidFilePath_GeneratesReportSuccessfully() {
+		CheckstyleAnalyzer checkstyleTool = new CheckstyleAnalyzer(Values.TEST_VALID_FILE_PATH, Values.CHECKSTYLE_PATH,
+				Values.CHECKSTYLE_RULESET);
+		final StringBuilder output = checkstyleTool.generateReport();
+		assertTrue(output.length() > 0);
+	}
+	
+	@Test
+	public void generateReport_PmdAnalyzer_ValidFilePath_GeneratesReportSuccessfully() {
+		PmdAnalyzer pmdTool = new PmdAnalyzer(Values.TEST_VALID_FILE_PATH, Values.PMD_RULESET);
+		final StringBuilder output = pmdTool.generateReport();
+		assertTrue(output.length() > 0);
 	}
 }

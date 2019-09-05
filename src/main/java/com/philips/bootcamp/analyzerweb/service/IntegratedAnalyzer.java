@@ -18,10 +18,11 @@ public class IntegratedAnalyzer extends Tool{
   }
 
   @Override
-  public String generateReport() throws RuntimeException {
-    String finalReport = null;
+  public StringBuilder generateReport() throws RuntimeException {
+    StringBuilder finalReport = new StringBuilder();
     for (final Tool tool : tools) {
-      finalReport += tool.generateReport();
+      finalReport.append(tool.generateReport());
+      finalReport.append("\n");
     }
     return finalReport;
   }

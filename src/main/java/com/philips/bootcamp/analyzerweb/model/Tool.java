@@ -24,7 +24,7 @@ public abstract class Tool {
     this.filepath = filepath;
   }
 
-  public abstract String generateReport() throws RuntimeException;
+  public abstract StringBuilder generateReport();
 
   public abstract boolean isValidReport();
 

@@ -23,30 +23,30 @@ import com.philips.bootcamp.analyzerweb.utils.Values;
 public class StaticCodeAnalyzerController {
 
   @RequestMapping(value="/api/cs/",method = RequestMethod.GET)
-  public ResponseEntity<String> genCheckstyle(@RequestParam("path") String path) throws IOException {
+  public ResponseEntity<StringBuilder> genCheckstyle(@RequestParam("path") String path) throws IOException {
     final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
     final CheckstyleAnalyzer cs = new CheckstyleAnalyzer(filepath, Values.CHECKSTYLE_PATH, 
     		Values.CHECKSTYLE_RULESET);    
     try {
 		return new ResponseEntity<>(cs.generateReport() ,HttpStatus.OK);
 	} catch (RuntimeException e) {
-		return new ResponseEntity<>(Values.ERROR_FILE_NOT_FOUND ,HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(new StringBuilder(Values.ERROR_FILE_NOT_FOUND) ,HttpStatus.NOT_FOUND);
 	}
   }
 
   @RequestMapping(value="/api/pmd/",method = RequestMethod.GET)
-  public ResponseEntity<String> genPmd(@RequestParam("path") String path)throws IOException{
+  public ResponseEntity<StringBuilder> genPmd(@RequestParam("path") String path)throws IOException{
     final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
     final PmdAnalyzer pmd = new PmdAnalyzer(filepath, Values.PMD_RULESET);
     try {
 		return new ResponseEntity<>(pmd.generateReport() ,HttpStatus.OK);
 	} catch (RuntimeException e) {
-		return new ResponseEntity<>(Values.ERROR_FILE_NOT_FOUND,HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(new StringBuilder(Values.ERROR_FILE_NOT_FOUND),HttpStatus.NOT_FOUND);
 	}
   }
   
   @RequestMapping(value="/api/all/",method = RequestMethod.GET)
-  public ResponseEntity<String> genIntegratedReport(@RequestParam("path") String path)throws IOException{
+  public ResponseEntity<StringBuilder> genIntegratedReport(@RequestParam("path") String path)throws IOException{
     final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
     final CheckstyleAnalyzer checkstyleAnalyzer = new CheckstyleAnalyzer(filepath, Values.CHECKSTYLE_PATH, 
     		Values.CHECKSTYLE_RULESET);
@@ -57,7 +57,7 @@ public class StaticCodeAnalyzerController {
     try {
 		return new ResponseEntity<>(integratedAnalyzer.generateReport() ,HttpStatus.OK);
 	} catch (RuntimeException e) {
-		return new ResponseEntity<>(Values.ERROR_FILE_NOT_FOUND, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(new StringBuilder(Values.ERROR_FILE_NOT_FOUND), HttpStatus.NOT_FOUND);
 	}
   }
 

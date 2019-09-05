@@ -3,10 +3,8 @@
  */
 package com.philips.bootcamp.analyzerweb.service;
 
-import java.io.IOException;
 import com.philips.bootcamp.analyzerweb.model.Tool;
 import com.philips.bootcamp.analyzerweb.utils.CommandLine;
-import com.philips.bootcamp.analyzerweb.utils.CommandLine.ShellCommandException;
 import com.philips.bootcamp.analyzerweb.utils.ConfigFileReader;
 import com.philips.bootcamp.analyzerweb.utils.FileValidator;
 
@@ -26,9 +24,9 @@ public class PmdAnalyzer extends Tool{
   }
 
   @Override
-  public String generateReport() throws RuntimeException { 
+  public StringBuilder generateReport() { 
       final String[] cmdCommand = {"pmd.bat", "-d", filepath, "-f", "html", "-R", pmdRuleset, "-failOnViolation", "false"};
-      return CommandLine.runShellCommand(cmdCommand);
+      return new StringBuilder(CommandLine.runShellCommand(cmdCommand));
   }
 
   @Override

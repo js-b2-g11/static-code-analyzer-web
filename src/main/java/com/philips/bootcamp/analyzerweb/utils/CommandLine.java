@@ -22,65 +22,63 @@ import org.zeroturnaround.exec.ProcessResult;
  */
 public class CommandLine {
 
-  private static final Logger LOGGER = getLogger(CommandLine.class);
+	private static final Logger LOGGER = getLogger(CommandLine.class);
 
-  /**
-   * Run a shell command synchronously.
-   *
-   * @param command command to run and arguments
-   * @return the stdout output of the command
-   */
-  public static String runShellCommand(String... command) {
+	/**
+	 * Run a shell command synchronously.
+	 *
+	 * @param command command to run and arguments
+	 * @return the stdout output of the command
+	 */
+	public static String runShellCommand(String... command) {
 
-    final String joinedCommand = String.join(" ", command);
-    LOGGER.debug("Executing shell command: `{}`", joinedCommand);
+		final String joinedCommand = String.join(" ", command);
+		LOGGER.debug("Executing shell command: `{}`", joinedCommand);
 
-    try {
-      ProcessResult result;
-      result = new ProcessExecutor()
-          .command(command)
-          .readOutput(true)
-          .exitValueNormal()
-          .execute();
+		try {
+			ProcessResult result;
+			result = new ProcessExecutor().command(command).readOutput(true).exitValueNormal().execute();
 
-      return result.outputUTF8().trim();
-    } catch (IOException | InterruptedException | TimeoutException | InvalidExitValueException e) {
-      throw new ShellCommandException("Exception when executing " + joinedCommand, e);
-    }
-  }
+			return result.outputUTF8().trim();
+		} catch (IOException | InterruptedException | TimeoutException | InvalidExitValueException e) {
+			Thread.currentThread().interrupt();
+			throw new ShellCommandException("Exception when executing " + joinedCommand, e);
+		}
+	}
 
-  /**
-   * Check whether an executable exists, either at a specific path (if a full path is given) or
-   * on the PATH.
-   *
-   * @param executable the name of an executable on the PATH or a complete path to an executable that may/may not exist
-   * @return  whether the executable exists and is executable
-   */
-  public static boolean executableExists(String executable) {
+	/**
+	 * Check whether an executable exists, either at a specific path (if a full path
+	 * is given) or on the PATH.
+	 *
+	 * @param executable the name of an executable on the PATH or a complete path to
+	 *                   an executable that may/may not exist
+	 * @return whether the executable exists and is executable
+	 */
+	public static boolean executableExists(String executable) {
 
-    // First check if we've been given the full path already
-    final File directFile = new File(executable);
-    if (directFile.exists() && directFile.canExecute()) {
-      return true;
-    }
+		// First check if we've been given the full path already
+		final File directFile = new File(executable);
+		if (directFile.exists() && directFile.canExecute()) {
+			return true;
+		}
 
-    for (final String pathString : getSystemPath()) {
-      final Path path = Paths.get(pathString);
-      if (Files.exists(path.resolve(executable)) && Files.isExecutable(path.resolve(executable))) {
-        return true;
-      }
-    }
-    return false;
-  }
+		for (final String pathString : getSystemPath()) {
+			final Path path = Paths.get(pathString);
+			if (Files.exists(path.resolve(executable)) && Files.isExecutable(path.resolve(executable))) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-  @NotNull
-  public static String[] getSystemPath() {
-    return System.getenv("PATH").split(Pattern.quote(File.pathSeparator));
-  }
+	@NotNull
+	public static String[] getSystemPath() {
+		return System.getenv("PATH").split(Pattern.quote(File.pathSeparator));
+	}
 
-  public static class ShellCommandException extends RuntimeException {
-    public ShellCommandException(String message, Exception e) {
-      super(message, e);
-    }
-  }
+	public static class ShellCommandException extends RuntimeException {
+		public ShellCommandException(String message, Exception e) {
+			super(message, e);
+		}
+	}
 }

@@ -29,9 +29,9 @@ public class CheckstyleAnalyzer extends Tool{
   }
 
   @Override
-  public String generateReport() throws RuntimeException {
+  public StringBuilder generateReport() {
       final String[] cmdCommand = {"java", "-jar", checkstylePath, "-c", checkstyleRuleset, filepath};
-      return CommandLine.runShellCommand(cmdCommand);    
+      return new StringBuilder(CommandLine.runShellCommand(cmdCommand));    
   }
 
   @Override
