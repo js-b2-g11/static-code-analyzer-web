@@ -26,13 +26,9 @@ public class PmdAnalyzer extends Tool{
   }
 
   @Override
-  public String generateReport() throws RuntimeException {
-    if (isValidReport()) {
+  public String generateReport() throws RuntimeException { 
       final String[] cmdCommand = {"pmd.bat", "-d", filepath, "-f", "html", "-R", pmdRuleset, "-failOnViolation", "false"};
       return CommandLine.runShellCommand(cmdCommand);
-    } else {
-      return "File error: file not found or incorrect path";
-    }
   }
 
   @Override

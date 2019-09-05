@@ -20,5 +20,8 @@ public class Values {
   public static final String FINAL_OUTPUT_FILE = "mergedReport.txt";
   
   public static final String ERROR_FILE_NOT_FOUND = "Error: File not found";
+  
+  public static final String TEST_VALID_FILE_PATH = "C:\\Users\\320053825\\Downloads\\SampleJavaFiles";
+  public static final String TEST_INVALID_FILE_PATH = "C:\\Users\\320053825\\Downloads\\SampleFiles";
 
 }
