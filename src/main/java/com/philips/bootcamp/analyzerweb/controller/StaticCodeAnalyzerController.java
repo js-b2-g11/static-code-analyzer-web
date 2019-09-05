@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.philips.bootcamp.analyzerweb.service.CheckstyleAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.IntegratedAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.PmdAnalyzer;
+import com.philips.bootcamp.analyzerweb.utils.IssueCounter;
 import com.philips.bootcamp.analyzerweb.utils.JavaFileLister;
 import com.philips.bootcamp.analyzerweb.utils.Values;
 
@@ -55,7 +56,15 @@ public class StaticCodeAnalyzerController {
     integratedAnalyzer.add(checkstyleAnalyzer);
     integratedAnalyzer.add(pmdAnalyzer);
     try {
-		return new ResponseEntity<>(integratedAnalyzer.generateReport() ,HttpStatus.OK);
+    	StringBuilder output = integratedAnalyzer.generateReport();
+    	int countOfIssues = IssueCounter.countIssuesIntegratedAnalyzer(output);
+    	output.insert(0, String.format("Count of Issues = %d%n", countOfIssues));
+    	if (countOfIssues == 0) {
+    		output.insert(0, "GO\n");
+    	} else {
+    		output.insert(0, "NO-GO\n");
+    	}
+    	return new ResponseEntity<>(output ,HttpStatus.OK);
 	} catch (RuntimeException e) {
 		return new ResponseEntity<>(new StringBuilder(Values.ERROR_FILE_NOT_FOUND), HttpStatus.NOT_FOUND);
 	}

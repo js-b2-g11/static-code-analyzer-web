@@ -5,7 +5,7 @@ package com.philips.bootcamp.analyzerweb.utils;
 
 public class Values {
 
-  public static final String FILE_PATH = "C:\\Users\\320053825\\Downloads\\SampleJavaFiles";
+  public static final String FILE_PATH = "‪C:/Users/320053825/Documents/static-code-analyzer/helloworld/src/main/java/com/philips/bootcamp/helloworld/App.java";
 
   public static final String PMD_CMD = "pmd.bat -d ";
   public static final String PMD_RULESET = "category/java/codestyle.xml";

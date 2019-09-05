@@ -9,21 +9,21 @@ import com.philips.bootcamp.analyzerweb.service.CheckstyleAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.IntegratedAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.PmdAnalyzer;
 import com.philips.bootcamp.analyzerweb.utils.CommandLine.ShellCommandException;
+import com.philips.bootcamp.analyzerweb.utils.IssueCounter;
 import com.philips.bootcamp.analyzerweb.utils.Values;
 
 public class TestDriver {
   public static void main(String args[]) {
-        final CheckstyleAnalyzer checkstyleTool = new CheckstyleAnalyzer("C:/asdfasdfadsf", Values.CHECKSTYLE_PATH,
+	  	final PmdAnalyzer pmdTool = new PmdAnalyzer(Values.FILE_PATH, Values.PMD_RULESET);
+        final CheckstyleAnalyzer checkstyleTool = new CheckstyleAnalyzer("C:\\Users\\320053825\\Documents\\static-code-analyzer\\helloworld\\src\\main\\java\\com\\philips\\bootcamp\\helloworld\\App.java", Values.CHECKSTYLE_PATH,
         		Values.CHECKSTYLE_RULESET);
-//        final PmdAnalyzer pmdTool = PmdAnalyzer.getObjectFromConfigFile();
-//        final IntegratedAnalyzer analyzer = new IntegratedAnalyzer(Values.FILE_PATH);
-//        analyzer.add(checkstyleTool);
-//        analyzer.add(pmdTool);
         try {
-          checkstyleTool.generateReport();
+          StringBuilder cmdOut = checkstyleTool.generateReport();
+          System.out.println(cmdOut);
+          System.out.println(IssueCounter.countIssuesSingleAnalyzer(cmdOut));
         } catch (final ShellCommandException e) {
-          System.out.println("Something happened here");
-        }
+          e.printStackTrace();
+        }   
   }
 }
 

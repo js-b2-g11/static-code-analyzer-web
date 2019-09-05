@@ -25,7 +25,7 @@ public class PmdAnalyzer extends Tool{
 
   @Override
   public StringBuilder generateReport() { 
-      final String[] cmdCommand = {"pmd.bat", "-d", filepath, "-f", "html", "-R", pmdRuleset, "-failOnViolation", "false"};
+      final String[] cmdCommand = {"pmd.bat", "-d", filepath, "-R", pmdRuleset, "-failOnViolation", "false"};
       return new StringBuilder(CommandLine.runShellCommand(cmdCommand));
   }
 

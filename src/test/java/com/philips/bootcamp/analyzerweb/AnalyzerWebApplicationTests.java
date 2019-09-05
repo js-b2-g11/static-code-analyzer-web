@@ -100,14 +100,16 @@ public class AnalyzerWebApplicationTests {
 	public void generateReport_CheckstyleAnalyzer_ValidFilePath_GeneratesReportSuccessfully() {
 		CheckstyleAnalyzer checkstyleTool = new CheckstyleAnalyzer(Values.TEST_VALID_FILE_PATH, Values.CHECKSTYLE_PATH,
 				Values.CHECKSTYLE_RULESET);
-		final StringBuilder output = checkstyleTool.generateReport();
+		StringBuilder output = null;
+		output = checkstyleTool.generateReport();
 		assertTrue(output.length() > 0);
 	}
 	
 	@Test
 	public void generateReport_PmdAnalyzer_ValidFilePath_GeneratesReportSuccessfully() {
 		PmdAnalyzer pmdTool = new PmdAnalyzer(Values.TEST_VALID_FILE_PATH, Values.PMD_RULESET);
-		final StringBuilder output = pmdTool.generateReport();
+		StringBuilder output = null;
+		output = pmdTool.generateReport();
 		assertTrue(output.length() > 0);
 	}
 }
