@@ -4,7 +4,11 @@
 package com.philips.bootcamp.analyzerweb;
 
 import static org.junit.Assert.assertEquals;
+
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URISyntaxException;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,9 +26,9 @@ import com.philips.bootcamp.analyzerweb.utils.Values;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class AnalyzerWebApplicationTests {
-
+	//getReportOfValidFileDirectoryForPmd
 	@Test
-	public void getReportOfValidFileDirectoryForPmd() throws Exception {
+	public void generateReport_APIController_PmdAnalyzer_ValidFilePath_GenerateWithOKSTatus() throws Exception {
 		final String testUri = "/api/pmd/?path=" + PathEncoder.encodeURI(Values.TEST_VALID_FILE_PATH);
 		final RestTemplate restTemplate = new RestTemplate();
 		final String baseUrl = "http://localhost:8080" + testUri;
@@ -34,7 +38,7 @@ public class AnalyzerWebApplicationTests {
 	}
 
 	@Test
-	public void getReportOfValidFileDirectoryForCheckstyle() throws Exception {
+	public void generateReport_APIController_CheckstyleAnalyzer_ValidFilePath_GenerateWithOKSTatus() throws Exception {
 		final String testUri = "/api/cs/?path=" + PathEncoder.encodeURI(Values.TEST_VALID_FILE_PATH);
 		final RestTemplate restTemplate = new RestTemplate();
 		final String baseUrl = "http://localhost:8080" + testUri;
@@ -44,7 +48,7 @@ public class AnalyzerWebApplicationTests {
 	}
 
 	@Test(expected = HttpClientErrorException.class)
-	public void getReportOfInvalidFileDirectoryForPmd() throws Exception {
+	public void generateReport_APIController_PmdAnalyzer_InvalidFilePath_GenerateWith404STatus() throws Exception {
 		final String testUri = "/api/pmd/?path=" + PathEncoder.encodeURI(Values.TEST_INVALID_FILE_PATH);
 		final RestTemplate restTemplate = new RestTemplate();
 		final String baseUrl = "http://localhost:8080" + testUri;
@@ -55,7 +59,7 @@ public class AnalyzerWebApplicationTests {
 	}
 
 	@Test(expected = HttpClientErrorException.class)
-	public void getReportOfInvalidFileDirectoryForCheckstyle() throws Exception {
+	public void generateReport_APIController_CheckstyleAnalyzer_InvalidFilePath_GenerateWith404STatus() throws UnsupportedEncodingException, URISyntaxException {
 		final String testUri = "/api/cs/?path=" + PathEncoder.encodeURI(Values.TEST_INVALID_FILE_PATH);
 		final RestTemplate restTemplate = new RestTemplate();
 		final String baseUrl = "http://localhost:8080" + testUri;
