@@ -36,16 +36,5 @@ public class CheckstyleAnalyzer extends AbstractTool{
     return false;
   }
 
-  @Override
-  public String toString() {
-    final StringBuilder builder = new StringBuilder("Checkstyle Analyzer: ");
-    builder.append(filepath);
-    builder.append(",");
-    builder.append(checkstylePath);
-    builder.append(",");
-    builder.append(checkstyleRuleset);
-
-    return builder.toString();
-  }
 
 }

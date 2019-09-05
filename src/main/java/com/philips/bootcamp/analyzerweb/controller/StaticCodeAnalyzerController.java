@@ -28,7 +28,7 @@ public class StaticCodeAnalyzerController {
       final CheckstyleAnalyzer checkStyle = new CheckstyleAnalyzer(filepath,ValuesUtil.CS_PATH,ValuesUtil.CS_RULESET);
       return new ResponseEntity<>(checkStyle.generateReport(),HttpStatus.OK);
     } catch (final Exception e) {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>(ValuesUtil.ERROR_FILE_NOT_FOUND,HttpStatus.NOT_FOUND);
     }
   }
 
@@ -39,7 +39,7 @@ public class StaticCodeAnalyzerController {
       final PmdAnalyzer pmd = new PmdAnalyzer(filepath,ValuesUtil.PMD_RULESET);
       return new ResponseEntity<>(pmd.generateReport(),HttpStatus.OK);
     } catch (final Exception e) {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>(ValuesUtil.ERROR_FILE_NOT_FOUND,HttpStatus.NOT_FOUND);
     }
   }
 

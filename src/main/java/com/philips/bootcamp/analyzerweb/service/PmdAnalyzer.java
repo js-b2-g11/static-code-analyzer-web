@@ -26,15 +26,6 @@ public class PmdAnalyzer extends AbstractTool{
     return cmdOutput;
   }
 
-  @Override
-  public String toString() {
-    final StringBuilder builder = new StringBuilder("PMD Analyzer: ");
-    builder.append(filepath);
-    builder.append(",");
-    builder.append(pmdRuleset);
-
-    return builder.toString();
-  }
 
   @Override
   public boolean isValidReport() {

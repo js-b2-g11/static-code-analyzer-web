@@ -37,8 +37,5 @@ public abstract class AbstractTool {
   public void remove(final AbstractTool tool) {
     throw new UnsupportedOperationException("Cannot add tool by default");
   }
-
-  @Override
-  public abstract String toString();
 }
 
