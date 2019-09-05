@@ -4,6 +4,7 @@
 package com.philips.bootcamp.analyzerweb.model;
 
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,7 +26,7 @@ public abstract class AbstractTool {
     this.filepath = filepath;
   }
 
-  public abstract String generateReport() throws IOException;
+  public abstract String generateReport() throws IOException, TimeoutException, InterruptedException;
 
   public abstract boolean isValidReport();
 

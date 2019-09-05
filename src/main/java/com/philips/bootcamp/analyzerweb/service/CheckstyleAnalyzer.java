@@ -4,10 +4,9 @@
 package com.philips.bootcamp.analyzerweb.service;
 
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 import com.philips.bootcamp.analyzerweb.model.AbstractTool;
 import com.philips.bootcamp.analyzerweb.utils.CommandLineUtil;
-import com.philips.bootcamp.analyzerweb.utils.ConfigFileReader;
-import com.philips.bootcamp.analyzerweb.utils.FileValidatorUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,15 +23,8 @@ public class CheckstyleAnalyzer extends AbstractTool{
     this.checkstyleRuleset = checkstyleRuleset;
   }
 
-  public static CheckstyleAnalyzer getObjectFromConfigFile() {
-    final ConfigFileReader reader = ConfigFileReader.getReaderInstance();
-    return new CheckstyleAnalyzer(reader.getConfigurationValue("path"),
-        reader.getConfigurationValue("checkstylePath"),
-        reader.getConfigurationValue("checkstyleRuleset"));
-  }
-
   @Override
-  public String generateReport() throws IOException {
+  public String generateReport() throws IOException, TimeoutException, InterruptedException  {
     String cmdOutput = null;
     final String[] cmdCommand = {"java", "-jar", checkstylePath, "-c", checkstyleRuleset, filepath};
     cmdOutput = CommandLineUtil.runShellCommand(cmdCommand);
@@ -41,14 +33,7 @@ public class CheckstyleAnalyzer extends AbstractTool{
 
   @Override
   public boolean isValidReport() {
-    boolean flag = false;
-    if (this.getFilepath() == null || this.getFilepath().equals("")) {
-      flag = false;
-    }
-    else {
-      flag =  FileValidatorUtil.isValidPath(this.getFilepath());
-    }
-    return flag;
+    return false;
   }
 
   @Override

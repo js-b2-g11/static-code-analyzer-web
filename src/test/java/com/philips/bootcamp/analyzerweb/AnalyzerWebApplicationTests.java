@@ -4,6 +4,7 @@
 package com.philips.bootcamp.analyzerweb;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import java.net.URI;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import com.philips.bootcamp.analyzerweb.service.CheckstyleAnalyzer;
+import com.philips.bootcamp.analyzerweb.service.PmdAnalyzer;
 import com.philips.bootcamp.analyzerweb.utils.PathEncoder;
 import com.philips.bootcamp.analyzerweb.utils.ValuesUtil;
 
@@ -61,6 +64,34 @@ public class AnalyzerWebApplicationTests {
     ResponseEntity<String> result = null;
     result = restTemplate.getForEntity(uri, String.class);
     assertEquals(404, result.getStatusCodeValue());
+  }
+
+  @Test
+  public void getReportOfValidFileDirectoryForPmd_Console() throws Exception{
+    final PmdAnalyzer pmd = new PmdAnalyzer(ValuesUtil.TEST_VALID_PATH,ValuesUtil.PMD_RULESET);
+    final String output = pmd.generateReport();
+    assertTrue(output.length()>0);
+  }
+
+  @Test(expected = org.zeroturnaround.exec.InvalidExitValueException.class)
+  public void getReportOfInvalidFileDirectoryForPmd_Console() throws Exception{
+    final PmdAnalyzer pmd = new PmdAnalyzer(ValuesUtil.TEST_INVALID_PATH,ValuesUtil.PMD_RULESET);
+    final String output = pmd.generateReport();
+    assertTrue(output.length()>0);
+  }
+
+  @Test
+  public void getReportOfValidFileDirectoryForCheckstyle_Console() throws Exception{
+    final CheckstyleAnalyzer cs = new CheckstyleAnalyzer(ValuesUtil.TEST_VALID_PATH,ValuesUtil.CS_PATH,ValuesUtil.CS_RULESET);
+    final String output = cs.generateReport();
+    assertTrue(output.length()>0);
+  }
+
+  @Test(expected = org.zeroturnaround.exec.InvalidExitValueException.class)
+  public void getReportOfInvalidFileDirectoryForCheckstyle_Console() throws Exception{
+    final CheckstyleAnalyzer cs = new CheckstyleAnalyzer(ValuesUtil.TEST_INVALID_PATH,ValuesUtil.CS_PATH,ValuesUtil.CS_RULESET);
+    final String output = cs.generateReport();
+    assertTrue(output.length()>0);
   }
 
 }

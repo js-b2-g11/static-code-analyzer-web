@@ -4,10 +4,9 @@
 package com.philips.bootcamp.analyzerweb.service;
 
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 import com.philips.bootcamp.analyzerweb.model.AbstractTool;
 import com.philips.bootcamp.analyzerweb.utils.CommandLineUtil;
-import com.philips.bootcamp.analyzerweb.utils.ConfigFileReader;
-import com.philips.bootcamp.analyzerweb.utils.FileValidatorUtil;
 
 public class PmdAnalyzer extends AbstractTool{
 
@@ -19,30 +18,12 @@ public class PmdAnalyzer extends AbstractTool{
     this.pmdRuleset = pmdRuleset;
   }
 
-  public static PmdAnalyzer getObjectFromConfigFile() {
-    final ConfigFileReader reader = ConfigFileReader.getReaderInstance();
-    return new PmdAnalyzer(reader.getConfigurationValue("path"),
-        reader.getConfigurationValue("pmdRuleset"));
-  }
-
   @Override
-  public String generateReport() throws IOException {
-    String cmdOuput = null;
+  public String generateReport() throws IOException, TimeoutException, InterruptedException {
+    String cmdOutput = null;
     final String[] cmdCommand = {"pmd.bat", "-d", filepath, "-f", "html", "-R", pmdRuleset, "-failOnViolation", "false"};
-    cmdOuput =  CommandLineUtil.runShellCommand(cmdCommand);
-    return cmdOuput;
-  }
-
-  @Override
-  public boolean isValidReport() {
-    boolean flag = false;
-    if (this.getFilepath() == null || this.getFilepath().equals("")) {
-      flag = false;
-    }
-    else {
-      flag = FileValidatorUtil.isValidPath(this.getFilepath());
-    }
-    return flag;
+    cmdOutput = CommandLineUtil.runShellCommand(cmdCommand);
+    return cmdOutput;
   }
 
   @Override
@@ -53,6 +34,12 @@ public class PmdAnalyzer extends AbstractTool{
     builder.append(pmdRuleset);
 
     return builder.toString();
+  }
+
+  @Override
+  public boolean isValidReport() {
+    // TODO Auto-generated method stub
+    return false;
   }
 
 }
