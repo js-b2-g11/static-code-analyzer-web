@@ -18,7 +18,7 @@ public class IntegratedAnalyzer extends Tool{
   }
 
   @Override
-  public String generateReport() throws IOException {
+  public String generateReport() throws RuntimeException {
     String finalReport = null;
     for (final Tool tool : tools) {
       finalReport += tool.generateReport();

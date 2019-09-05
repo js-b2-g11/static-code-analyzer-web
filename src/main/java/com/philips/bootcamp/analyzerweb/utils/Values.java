@@ -18,5 +18,7 @@ public class Values {
 
   public static final int DEFAULT_LINECOUNT = 17;
   public static final String FINAL_OUTPUT_FILE = "mergedReport.txt";
+  
+  public static final String ERROR_FILE_NOT_FOUND = "Error: File not found";
 
 }

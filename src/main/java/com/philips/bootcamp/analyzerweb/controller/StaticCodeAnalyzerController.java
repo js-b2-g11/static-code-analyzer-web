@@ -15,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.philips.bootcamp.analyzerweb.service.CheckstyleAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.IntegratedAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.PmdAnalyzer;
-import com.philips.bootcamp.analyzerweb.utils.CommandLine.ShellCommandException;
 import com.philips.bootcamp.analyzerweb.utils.JavaFileLister;
 import com.philips.bootcamp.analyzerweb.utils.Values;
 
@@ -24,14 +23,14 @@ import com.philips.bootcamp.analyzerweb.utils.Values;
 public class StaticCodeAnalyzerController {
 
   @RequestMapping(value="/api/cs/",method = RequestMethod.GET)
-  public ResponseEntity<String> genCheckstyle(@RequestParam("path") String path) throws IOException{
+  public ResponseEntity<String> genCheckstyle(@RequestParam("path") String path) throws IOException {
     final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
     final CheckstyleAnalyzer cs = new CheckstyleAnalyzer(filepath, Values.CHECKSTYLE_PATH, 
     		Values.CHECKSTYLE_RULESET);    
     try {
 		return new ResponseEntity<>(cs.generateReport() ,HttpStatus.OK);
-	} catch (ShellCommandException e) {
-		return new ResponseEntity<>("Error: file not found" ,HttpStatus.NOT_FOUND);
+	} catch (RuntimeException e) {
+		return new ResponseEntity<>(Values.ERROR_FILE_NOT_FOUND ,HttpStatus.NOT_FOUND);
 	}
   }
 
@@ -39,7 +38,11 @@ public class StaticCodeAnalyzerController {
   public ResponseEntity<String> genPmd(@RequestParam("path") String path)throws IOException{
     final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
     final PmdAnalyzer pmd = new PmdAnalyzer(filepath, Values.PMD_RULESET);
-    return new ResponseEntity<>(pmd.generateReport(),HttpStatus.OK);
+    try {
+		return new ResponseEntity<>(pmd.generateReport() ,HttpStatus.OK);
+	} catch (RuntimeException e) {
+		return new ResponseEntity<>(Values.ERROR_FILE_NOT_FOUND,HttpStatus.NOT_FOUND);
+	}
   }
   
   @RequestMapping(value="/api/all/",method = RequestMethod.GET)
@@ -51,7 +54,11 @@ public class StaticCodeAnalyzerController {
     IntegratedAnalyzer integratedAnalyzer = new IntegratedAnalyzer(filepath);
     integratedAnalyzer.add(checkstyleAnalyzer);
     integratedAnalyzer.add(pmdAnalyzer);
-    return new ResponseEntity<>(integratedAnalyzer.generateReport() ,HttpStatus.OK);
+    try {
+		return new ResponseEntity<>(integratedAnalyzer.generateReport() ,HttpStatus.OK);
+	} catch (RuntimeException e) {
+		return new ResponseEntity<>(Values.ERROR_FILE_NOT_FOUND, HttpStatus.NOT_FOUND);
+	}
   }
 
   @RequestMapping(value = "/api", method = RequestMethod.GET)

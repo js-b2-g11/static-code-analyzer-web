@@ -29,7 +29,7 @@ public class CheckstyleAnalyzer extends Tool{
   }
 
   @Override
-  public String generateReport() throws ShellCommandException {
+  public String generateReport() throws RuntimeException {
       final String[] cmdCommand = {"java", "-jar", checkstylePath, "-c", checkstyleRuleset, filepath};
       return CommandLine.runShellCommand(cmdCommand);    
   }

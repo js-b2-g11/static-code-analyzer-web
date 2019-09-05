@@ -70,7 +70,6 @@ public class CommandLine {
         return true;
       }
     }
-
     return false;
   }
 

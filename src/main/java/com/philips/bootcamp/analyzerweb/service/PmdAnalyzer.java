@@ -26,7 +26,7 @@ public class PmdAnalyzer extends Tool{
   }
 
   @Override
-  public String generateReport() throws IOException {
+  public String generateReport() throws RuntimeException {
     if (isValidReport()) {
       final String[] cmdCommand = {"pmd.bat", "-d", filepath, "-f", "html", "-R", pmdRuleset, "-failOnViolation", "false"};
       return CommandLine.runShellCommand(cmdCommand);
