@@ -21,8 +21,10 @@ import com.philips.bootcamp.analyzerweb.utils.ValuesUtil;;
 @RestController
 public class StaticCodeAnalyzerController {
 
+
+
   @GetMapping("/api/cs/")
-  public ResponseEntity<String> genCheckstyle(@RequestParam("path")final String path)throws IOException{
+  public ResponseEntity<StringBuilder> genCheckstyle(@RequestParam("path")final String path)throws IOException{
     final String filepath = PathDecoderUtil.decodeURI(path);
     try {
       final CheckstyleAnalyzer checkStyle = new CheckstyleAnalyzer(filepath,ValuesUtil.CS_PATH,ValuesUtil.CS_RULESET);
@@ -33,7 +35,7 @@ public class StaticCodeAnalyzerController {
   }
 
   @GetMapping("/api/pmd/")
-  public ResponseEntity<String> genPmd(@RequestParam("path")final String path)throws IOException{
+  public ResponseEntity<StringBuilder> genPmd(@RequestParam("path")final String path)throws IOException{
     final String filepath = PathDecoderUtil.decodeURI(path);
     try {
       final PmdAnalyzer pmd = new PmdAnalyzer(filepath,ValuesUtil.PMD_RULESET);
@@ -48,7 +50,12 @@ public class StaticCodeAnalyzerController {
     final JavaFileLister listFiles = new JavaFileLister();
     final ModelAndView model = new ModelAndView("index");
     final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
-    model.addObject("lists", listFiles.javaFilefilter(filepath));
+    try {
+      model.addObject("lists", listFiles.javaFilefilter(filepath));
+      model.setStatus(HttpStatus.OK);
+    } catch (final Exception e) {
+      model.setStatus(HttpStatus.NOT_FOUND);
+    }
     return model;
   }
 }

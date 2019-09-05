@@ -19,11 +19,11 @@ public class PmdAnalyzer extends AbstractTool{
   }
 
   @Override
-  public String generateReport() throws IOException, TimeoutException, InterruptedException {
-    String cmdOutput = null;
+  public StringBuilder generateReport() throws IOException, TimeoutException, InterruptedException {
+
     final String[] cmdCommand = {"pmd.bat", "-d", filepath, "-f", "html", "-R", pmdRuleset, "-failOnViolation", "false"};
-    cmdOutput = CommandLineUtil.runShellCommand(cmdCommand);
-    return cmdOutput;
+    return new StringBuilder(CommandLineUtil.runShellCommand(cmdCommand));
+
   }
 
 

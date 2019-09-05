@@ -24,11 +24,10 @@ public class CheckstyleAnalyzer extends AbstractTool{
   }
 
   @Override
-  public String generateReport() throws IOException, TimeoutException, InterruptedException  {
-    String cmdOutput = null;
+  public StringBuilder generateReport() throws IOException, TimeoutException, InterruptedException  {
+
     final String[] cmdCommand = {"java", "-jar", checkstylePath, "-c", checkstyleRuleset, filepath};
-    cmdOutput = CommandLineUtil.runShellCommand(cmdCommand);
-    return cmdOutput;
+    return new StringBuilder (CommandLineUtil.runShellCommand(cmdCommand));
   }
 
   @Override

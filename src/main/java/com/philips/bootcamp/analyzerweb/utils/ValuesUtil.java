@@ -12,6 +12,7 @@ public class ValuesUtil {
   public static final String CS_CMD = "cmd /c java -jar ";
 
   public static final String TEST_VALID_PATH="C:\\BootCampProject\\static-code-analyzer\\helloworld";
+  public static final String TEST_EMPTY_PATH="";
   public static final String TEST_INVALID_PATH="C:\\BootCampProject\\static-code-analyzer\\worldhello";
-  public static final String ERROR_FILE_NOT_FOUND = "Error: File not found";
+  public static final StringBuilder ERROR_FILE_NOT_FOUND = new StringBuilder("Error: File not found");
 }

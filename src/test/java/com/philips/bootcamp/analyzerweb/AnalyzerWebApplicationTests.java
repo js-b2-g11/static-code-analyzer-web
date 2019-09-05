@@ -22,6 +22,15 @@ import com.philips.bootcamp.analyzerweb.utils.ValuesUtil;
 @SpringBootTest
 public class AnalyzerWebApplicationTests {
 
+  @Test
+  public void getJavaFileList() throws Exception{
+    final String testUri = "/api/?path="+PathEncoder.encodeURI(ValuesUtil.TEST_VALID_PATH);
+    final RestTemplate restTemplate = new RestTemplate();
+    final String baseUrl = "http://localhost:8080" + testUri;
+    final URI uri = new URI(baseUrl);
+    final ResponseEntity<String> result = restTemplate.getForEntity(uri, String.class);
+    assertEquals(200, result.getStatusCodeValue());
+  }
 
   @Test
   public void getReportOfValidFileDirectoryForPmd() throws Exception{
@@ -69,28 +78,42 @@ public class AnalyzerWebApplicationTests {
   @Test
   public void getReportOfValidFileDirectoryForPmd_Console() throws Exception{
     final PmdAnalyzer pmd = new PmdAnalyzer(ValuesUtil.TEST_VALID_PATH,ValuesUtil.PMD_RULESET);
-    final String output = pmd.generateReport();
+    final StringBuilder output = pmd.generateReport();
+    assertTrue(output.length()>0);
+  }
+
+  @Test(expected = org.zeroturnaround.exec.InvalidExitValueException.class)
+  public void getReportNoFileDirectoryForPmd_Console() throws Exception{
+    final PmdAnalyzer pmd = new PmdAnalyzer(ValuesUtil.TEST_EMPTY_PATH,ValuesUtil.PMD_RULESET);
+    final StringBuilder output = pmd.generateReport();
     assertTrue(output.length()>0);
   }
 
   @Test(expected = org.zeroturnaround.exec.InvalidExitValueException.class)
   public void getReportOfInvalidFileDirectoryForPmd_Console() throws Exception{
     final PmdAnalyzer pmd = new PmdAnalyzer(ValuesUtil.TEST_INVALID_PATH,ValuesUtil.PMD_RULESET);
-    final String output = pmd.generateReport();
+    final StringBuilder output = pmd.generateReport();
     assertTrue(output.length()>0);
   }
 
   @Test
   public void getReportOfValidFileDirectoryForCheckstyle_Console() throws Exception{
     final CheckstyleAnalyzer cs = new CheckstyleAnalyzer(ValuesUtil.TEST_VALID_PATH,ValuesUtil.CS_PATH,ValuesUtil.CS_RULESET);
-    final String output = cs.generateReport();
+    final StringBuilder output = cs.generateReport();
+    assertTrue(output.length()>0);
+  }
+
+  @Test(expected = org.zeroturnaround.exec.InvalidExitValueException.class)
+  public void getReportNoFileDirectoryForCheckstyle_Console() throws Exception{
+    final CheckstyleAnalyzer cs = new CheckstyleAnalyzer(ValuesUtil.TEST_EMPTY_PATH,ValuesUtil.CS_PATH,ValuesUtil.CS_RULESET);
+    final StringBuilder output = cs.generateReport();
     assertTrue(output.length()>0);
   }
 
   @Test(expected = org.zeroturnaround.exec.InvalidExitValueException.class)
   public void getReportOfInvalidFileDirectoryForCheckstyle_Console() throws Exception{
     final CheckstyleAnalyzer cs = new CheckstyleAnalyzer(ValuesUtil.TEST_INVALID_PATH,ValuesUtil.CS_PATH,ValuesUtil.CS_RULESET);
-    final String output = cs.generateReport();
+    final StringBuilder output = cs.generateReport();
     assertTrue(output.length()>0);
   }
 

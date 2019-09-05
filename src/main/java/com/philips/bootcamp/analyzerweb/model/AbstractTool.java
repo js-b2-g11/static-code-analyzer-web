@@ -26,7 +26,7 @@ public abstract class AbstractTool {
     this.filepath = filepath;
   }
 
-  public abstract String generateReport() throws IOException, TimeoutException, InterruptedException;
+  public abstract StringBuilder generateReport() throws IOException, TimeoutException, InterruptedException;
 
   public abstract boolean isValidReport();
 
