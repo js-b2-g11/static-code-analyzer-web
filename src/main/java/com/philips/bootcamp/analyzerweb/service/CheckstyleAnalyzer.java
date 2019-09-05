@@ -33,15 +33,9 @@ public class CheckstyleAnalyzer extends AbstractTool{
 
   @Override
   public String generateReport() throws IOException {
-
     String cmdOutput = null;
-    try {
-      final String[] cmdCommand = {"java", "-jar", checkstylePath, "-c", checkstyleRuleset, filepath};
-      cmdOutput = CommandLineUtil.runShellCommand(cmdCommand);
-    } catch (final Exception e) {
-      e.printStackTrace();
-    }
-
+    final String[] cmdCommand = {"java", "-jar", checkstylePath, "-c", checkstyleRuleset, filepath};
+    cmdOutput = CommandLineUtil.runShellCommand(cmdCommand);
     return cmdOutput;
   }
 

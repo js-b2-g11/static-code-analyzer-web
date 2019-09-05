@@ -28,13 +28,8 @@ public class PmdAnalyzer extends AbstractTool{
   @Override
   public String generateReport() throws IOException {
     String cmdOuput = null;
-
-    try {
-      final String[] cmdCommand = {"pmd.bat", "-d", filepath, "-f", "html", "-R", pmdRuleset, "-failOnViolation", "false"};
-      cmdOuput =  CommandLineUtil.runShellCommand(cmdCommand);
-    } catch (final Exception e) {
-      e.printStackTrace();
-    }
+    final String[] cmdCommand = {"pmd.bat", "-d", filepath, "-f", "html", "-R", pmdRuleset, "-failOnViolation", "false"};
+    cmdOuput =  CommandLineUtil.runShellCommand(cmdCommand);
     return cmdOuput;
   }
 
