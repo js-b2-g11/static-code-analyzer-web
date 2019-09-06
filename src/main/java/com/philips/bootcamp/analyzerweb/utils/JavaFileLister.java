@@ -12,7 +12,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.logging.log4j.Logger;
+
 public class JavaFileLister {
+	private static Logger logger;
 
   public List<String> javaFilefilter(String dir){
     List<String> result = null;
@@ -23,7 +26,7 @@ public class JavaFileLister {
           .filter(f -> f.endsWith(".java")).collect(Collectors.toList());
 
     } catch (final IOException e) {
-      e.printStackTrace();
+    	 logger.error("something happened here");
     }
     return result;
   }

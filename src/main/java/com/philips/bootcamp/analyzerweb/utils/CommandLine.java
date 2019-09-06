@@ -21,7 +21,10 @@ import org.zeroturnaround.exec.ProcessResult;
  * Process execution utility methods.
  */
 
-public class CommandLine {
+public final class CommandLine {
+	private CommandLine() {
+		
+	}
 
 	private static final Logger LOGGER = getLogger(CommandLine.class);
 
@@ -30,19 +33,20 @@ public class CommandLine {
 	 *
 	 * @param command command to run and arguments
 	 * @return the stdout output of the command
+	 * @throws TimeoutException 
+	 * @throws InterruptedException 
+	 * @throws IOException 
+	 * @throws InvalidExitValueException 
 	 */
-	public static String runShellCommand(String... command) {
+	public static String runShellCommand(String... command) throws  IOException, InterruptedException, TimeoutException {
 
 		final String joinedCommand = String.join(" ", command);
 		LOGGER.debug("Executing shell command: `{}`", joinedCommand);
 
-		try {
 			ProcessResult result;
 			result = new ProcessExecutor().command(command).readOutput(true).exitValueNormal().execute();
       return result.outputUTF8().trim();
-    } catch (IOException | InterruptedException | TimeoutException | InvalidExitValueException e  ) {
-      throw new ShellCommandException("Exception when executing " + joinedCommand, e);
-    }
+ 
   }
 
 	
