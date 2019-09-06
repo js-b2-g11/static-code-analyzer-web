@@ -15,7 +15,7 @@ import com.philips.bootcamp.analyzerweb.utils.Values;
 public class TestDriver {
   public static void main(String args[]) {
 	  	final PmdAnalyzer pmdTool = new PmdAnalyzer(Values.FILE_PATH, Values.PMD_RULESET);
-        final CheckstyleAnalyzer checkstyleTool = new CheckstyleAnalyzer("C:\\Users\\320053825\\Documents\\static-code-analyzer\\helloworld\\src\\main\\java\\com\\philips\\bootcamp\\helloworld\\App.java", Values.CHECKSTYLE_PATH,
+        final CheckstyleAnalyzer checkstyleTool = new CheckstyleAnalyzer("C:\\Users\\320053825\\Documents\\static-code-analyzer\\helloworld\\src\\main\\java\\com\\philips\\bootcamp\\helloworld\\HelloApp.java", Values.CHECKSTYLE_PATH,
         		Values.CHECKSTYLE_RULESET);
         try {
           StringBuilder cmdOut = checkstyleTool.generateReport();

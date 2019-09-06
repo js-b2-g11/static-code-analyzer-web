@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,7 +24,7 @@ import com.philips.bootcamp.analyzerweb.utils.Values;
 @RestController
 public class StaticCodeAnalyzerController {
 
-  @RequestMapping(value="/api/cs/",method = RequestMethod.GET)
+  @GetMapping("/api/cs/")
   public ResponseEntity<StringBuilder> genCheckstyle(@RequestParam("path") String path) throws IOException {
     final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
     final CheckstyleAnalyzer cs = new CheckstyleAnalyzer(filepath, Values.CHECKSTYLE_PATH, 
@@ -35,7 +36,7 @@ public class StaticCodeAnalyzerController {
 	}
   }
 
-  @RequestMapping(value="/api/pmd/",method = RequestMethod.GET)
+  @GetMapping("/api/pmd/")
   public ResponseEntity<StringBuilder> genPmd(@RequestParam("path") String path)throws IOException{
     final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
     final PmdAnalyzer pmd = new PmdAnalyzer(filepath, Values.PMD_RULESET);
@@ -46,7 +47,7 @@ public class StaticCodeAnalyzerController {
 	}
   }
   
-  @RequestMapping(value="/api/all/",method = RequestMethod.GET)
+  @GetMapping("/api/all/")
   public ResponseEntity<StringBuilder> genIntegratedReport(@RequestParam("path") String path)throws IOException{
     final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
     final CheckstyleAnalyzer checkstyleAnalyzer = new CheckstyleAnalyzer(filepath, Values.CHECKSTYLE_PATH, 
@@ -70,7 +71,7 @@ public class StaticCodeAnalyzerController {
 	}
   }
 
-  @RequestMapping(value = "/api", method = RequestMethod.GET)
+  @GetMapping("/api")
   public ModelAndView getFiles(@RequestParam("path") String path)throws IOException{
     final JavaFileLister listFiles = new JavaFileLister();
     final ModelAndView model = new ModelAndView("index");

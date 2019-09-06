@@ -26,8 +26,6 @@ public abstract class Tool {
 
   public abstract StringBuilder generateReport();
 
-  public abstract boolean isValidReport();
-
   public void add(Tool tool) {
     throw new UnsupportedOperationException("Cannot add tool by default");
   }

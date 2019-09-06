@@ -40,8 +40,7 @@ public class CommandLine {
 			result = new ProcessExecutor().command(command).readOutput(true).exitValueNormal().execute();
 
 			return result.outputUTF8().trim();
-		} catch (IOException | InterruptedException | TimeoutException | InvalidExitValueException e) {
-			Thread.currentThread().interrupt();
+		} catch (IOException | InterruptedException | TimeoutException | InvalidExitValueException e) {			
 			throw new ShellCommandException("Exception when executing " + joinedCommand, e);
 		}
 	}

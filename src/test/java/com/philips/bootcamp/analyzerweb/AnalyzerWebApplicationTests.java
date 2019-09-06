@@ -29,7 +29,36 @@ import com.philips.bootcamp.analyzerweb.utils.Values;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class AnalyzerWebApplicationTests {
-	//getReportOfValidFileDirectoryForPmd
+
+  @Test
+  public void generateReport_CheckstyleAnalyzer_ValidFilePath_GeneratesReportSuccessfully() throws InterruptedException {
+      CheckstyleAnalyzer checkstyleTool = new CheckstyleAnalyzer(Values.TEST_VALID_FILE_PATH, Values.CHECKSTYLE_PATH,
+              Values.CHECKSTYLE_RULESET);
+      StringBuilder output = null;      
+      output = checkstyleTool.generateReport();
+      assertTrue(output.length() > 0);
+  }
+  
+  @Test
+  public void generateReport_PmdAnalyzer_ValidFilePath_GeneratesReportSuccessfully() {
+      PmdAnalyzer pmdTool = new PmdAnalyzer(Values.TEST_VALID_FILE_PATH, Values.PMD_RULESET);
+      StringBuilder output = null;
+      output = pmdTool.generateReport();
+      assertTrue(output.length() > 0);
+  }
+  
+  @Test
+  public void generateReport_IntegratedAnalyzer_ValidFilePath_GeneratesReportSuccessfully() {
+      PmdAnalyzer pmdTool = new PmdAnalyzer(Values.TEST_VALID_FILE_PATH, Values.PMD_RULESET);
+      CheckstyleAnalyzer checkstyleTool = new CheckstyleAnalyzer(Values.TEST_VALID_FILE_PATH, Values.CHECKSTYLE_PATH,
+          Values.CHECKSTYLE_RULESET);
+      IntegratedAnalyzer integratedAnalyzer = new IntegratedAnalyzer(Values.TEST_VALID_FILE_PATH);
+      integratedAnalyzer.add(pmdTool);
+      integratedAnalyzer.add(checkstyleTool);
+      StringBuilder output = null;
+      output = integratedAnalyzer.generateReport();
+      assertTrue(output.length() > 0);
+  }
 	@Test
 	public void generateReport_APIController_PmdAnalyzer_ValidFilePath_GenerateWithOKSTatus() throws Exception {
 		final String testUri = "/api/pmd/?path=" + PathEncoder.encodeURI(Values.TEST_VALID_FILE_PATH);
@@ -94,22 +123,5 @@ public class AnalyzerWebApplicationTests {
 		integratedAnalyzer.add(checkstyleTool);
 		integratedAnalyzer.add(pmdTool);
 		integratedAnalyzer.generateReport();
-	}
-	
-	@Test
-	public void generateReport_CheckstyleAnalyzer_ValidFilePath_GeneratesReportSuccessfully() {
-		CheckstyleAnalyzer checkstyleTool = new CheckstyleAnalyzer(Values.TEST_VALID_FILE_PATH, Values.CHECKSTYLE_PATH,
-				Values.CHECKSTYLE_RULESET);
-		StringBuilder output = null;
-		output = checkstyleTool.generateReport();
-		assertTrue(output.length() > 0);
-	}
-	
-	@Test
-	public void generateReport_PmdAnalyzer_ValidFilePath_GeneratesReportSuccessfully() {
-		PmdAnalyzer pmdTool = new PmdAnalyzer(Values.TEST_VALID_FILE_PATH, Values.PMD_RULESET);
-		StringBuilder output = null;
-		output = pmdTool.generateReport();
-		assertTrue(output.length() > 0);
-	}
+	}	
 }

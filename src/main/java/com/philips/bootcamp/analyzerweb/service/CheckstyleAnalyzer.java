@@ -32,15 +32,7 @@ public class CheckstyleAnalyzer extends Tool{
   public StringBuilder generateReport() {
       final String[] cmdCommand = {"java", "-jar", checkstylePath, "-c", checkstyleRuleset, filepath};
       return new StringBuilder(CommandLine.runShellCommand(cmdCommand));    
-  }
-
-  @Override
-  public boolean isValidReport() {
-    if (this.getFilepath() == null || this.getFilepath().equals("")) {
-      return false;
-    }
-    return (FileValidator.isValidPath(this.getFilepath()));
-  }
+  } 
 
   @Override
   public String toString() {
