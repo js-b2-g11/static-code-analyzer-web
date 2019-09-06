@@ -4,22 +4,26 @@
 package com.philips.bootcamp.analyzerweb;
 
 import java.io.IOException;
+
 import com.philips.bootcamp.analyzerweb.service.CheckstyleAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.IntegratedAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.PmdAnalyzer;
+import com.philips.bootcamp.analyzerweb.utils.CommandLine.ShellCommandException;
+import com.philips.bootcamp.analyzerweb.utils.IssueCounter;
 import com.philips.bootcamp.analyzerweb.utils.Values;
 
 public class TestDriver {
   public static void main(String args[]) {
-    final CheckstyleAnalyzer checkstyleTool = CheckstyleAnalyzer.getObjectFromConfigFile();
-    final PmdAnalyzer pmdTool = PmdAnalyzer.getObjectFromConfigFile();
-    final IntegratedAnalyzer analyzer = new IntegratedAnalyzer(Values.FILE_PATH);
-    analyzer.add(checkstyleTool);
-    analyzer.add(pmdTool);
-    try {
-      analyzer.generateReport();
-    } catch (final IOException e) {
-      e.printStackTrace();
-    }
+	  	final PmdAnalyzer pmdTool = new PmdAnalyzer(Values.FILE_PATH, Values.PMD_RULESET);
+        final CheckstyleAnalyzer checkstyleTool = new CheckstyleAnalyzer("C:\\Users\\320053825\\Documents\\static-code-analyzer\\helloworld\\src\\main\\java\\com\\philips\\bootcamp\\helloworld\\HelloApp.java", Values.CHECKSTYLE_PATH,
+        		Values.CHECKSTYLE_RULESET);
+        try {
+          StringBuilder cmdOut = checkstyleTool.generateReport();
+          System.out.println(cmdOut);
+          System.out.println(IssueCounter.countIssuesSingleAnalyzer(cmdOut));
+        } catch (final ShellCommandException e) {
+          e.printStackTrace();
+        }   
   }
 }
+

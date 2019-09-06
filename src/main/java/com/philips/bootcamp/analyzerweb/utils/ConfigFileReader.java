@@ -35,14 +35,16 @@ public class ConfigFileReader {
     try (InputStream inputStream = Configuration.class.getResourceAsStream(CONFIGURATION_FILE)) {
       properties.load(inputStream);
     } catch (final IOException e) {
-      throw new RuntimeException("Failed to read file " + CONFIGURATION_FILE, e);
+      throw new MyRuntimeException("Failed to read file " + CONFIGURATION_FILE, e);
     }
   }
 
   public static Map<String, String> getConfiguration() {
     // ugly workaround to get String as generics
+    @SuppressWarnings("rawtypes")
     final Map temp = properties;
-    final Map<String, String> map = new HashMap<String, String>(temp);
+    @SuppressWarnings("unchecked")
+    final Map<String, String> map = new HashMap<>(temp);
     // prevent the returned configuration from being modified
     return Collections.unmodifiableMap(map);
   }
