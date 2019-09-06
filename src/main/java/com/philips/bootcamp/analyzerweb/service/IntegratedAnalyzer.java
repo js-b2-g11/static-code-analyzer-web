@@ -18,10 +18,10 @@ public class IntegratedAnalyzer extends Tool{
   }
 
   @Override
-  public String generateReport() throws IOException {
-    String finalReport = null;
+  public StringBuilder generateReport() throws IOException {
+    StringBuilder finalReport = new StringBuilder();
     for (final Tool tool : tools) {
-      finalReport += tool.generateReport();
+     finalReport.append(tool.generateReport());
     }
     return finalReport;
   }

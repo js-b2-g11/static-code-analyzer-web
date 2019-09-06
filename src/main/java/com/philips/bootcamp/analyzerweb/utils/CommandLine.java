@@ -20,8 +20,11 @@ import org.zeroturnaround.exec.ProcessResult;
 /**
  * Process execution utility methods.
  */
-public class CommandLine {
-
+public final class CommandLine {
+	
+	private CommandLine() {
+	
+	}
   private static final Logger LOGGER = getLogger(CommandLine.class);
 
   /**
@@ -44,11 +47,12 @@ public class CommandLine {
           .execute();
 
       return result.outputUTF8().trim();
-    } catch (IOException | InterruptedException | TimeoutException | InvalidExitValueException e) {
+    } catch ( ) {
       throw new ShellCommandException("Exception when executing " + joinedCommand, e);
     }
   }
 
+	
   /**
    * Check whether an executable exists, either at a specific path (if a full path is given) or
    * on the PATH.
