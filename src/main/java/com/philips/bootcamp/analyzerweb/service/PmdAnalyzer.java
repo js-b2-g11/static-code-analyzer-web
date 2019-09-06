@@ -3,7 +3,6 @@
  */
 package com.philips.bootcamp.analyzerweb.service;
 
-import java.io.IOException;
 import com.philips.bootcamp.analyzerweb.model.Tool;
 import com.philips.bootcamp.analyzerweb.utils.CommandLine;
 import com.philips.bootcamp.analyzerweb.utils.ConfigFileReader;
@@ -25,13 +24,9 @@ public class PmdAnalyzer extends Tool{
   }
 
   @Override
-  public String generateReport() throws IOException {
-    if (isValidReport()) {
+  public StringBuilder generateReport() { 
       final String[] cmdCommand = {"pmd.bat", "-d", filepath, "-R", pmdRuleset, "-failOnViolation", "false"};
-      return CommandLine.runShellCommand(cmdCommand);
-    } else {
-      return "File error: file not found or incorrect path";
-    }
+      return new StringBuilder(CommandLine.runShellCommand(cmdCommand));
   }
 
   @Override

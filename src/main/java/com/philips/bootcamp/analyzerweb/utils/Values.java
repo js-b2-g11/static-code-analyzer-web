@@ -5,7 +5,7 @@ package com.philips.bootcamp.analyzerweb.utils;
 
 public class Values {
 
-  public static final String FILE_PATH = "C:\\Users\\320053825\\Downloads\\SampleJavaFiles";
+  public static final String FILE_PATH = "‪C:/Users/320053825/Documents/static-code-analyzer/helloworld/src/main/java/com/philips/bootcamp/helloworld/App.java";
 
   public static final String PMD_CMD = "pmd.bat -d ";
   public static final String PMD_RULESET = "category/java/codestyle.xml";
@@ -18,5 +18,10 @@ public class Values {
 
   public static final int DEFAULT_LINECOUNT = 17;
   public static final String FINAL_OUTPUT_FILE = "mergedReport.txt";
+  
+  public static final String ERROR_FILE_NOT_FOUND = "Error: File not found";
+  
+  public static final String TEST_VALID_FILE_PATH = "C:\\Users\\320053825\\Downloads\\SampleJavaFiles";
+  public static final String TEST_INVALID_FILE_PATH = "C:\\Users\\320053825\\Downloads\\SampleFiles";
 
 }
