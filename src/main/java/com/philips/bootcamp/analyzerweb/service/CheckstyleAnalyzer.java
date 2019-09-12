@@ -4,9 +4,11 @@
 package com.philips.bootcamp.analyzerweb.service;
 
 import java.io.IOException;
+import com.philips.bootcamp.analyzerweb.utils.CommandLineExecutor;
+import com.philips.bootcamp.analyzerweb.exceptions.FilePathNotValidException;
 import com.philips.bootcamp.analyzerweb.model.Tool;
-import com.philips.bootcamp.analyzerweb.utils.CommandLine;
-import com.philips.bootcamp.analyzerweb.utils.CommandLine.ShellCommandException;
+import com.philips.bootcamp.analyzerweb.utils.ProcessExecutorCommandLine;
+import com.philips.bootcamp.analyzerweb.utils.ProcessExecutorCommandLine.ShellCommandException;
 import com.philips.bootcamp.analyzerweb.utils.ConfigFileReader;
 import com.philips.bootcamp.analyzerweb.utils.FileValidator;
 
@@ -29,9 +31,13 @@ public class CheckstyleAnalyzer extends Tool{
   }
 
   @Override
-  public StringBuilder generateReport() {
+  public StringBuilder generateReport() throws FilePathNotValidException, IOException, InterruptedException {
+    if (FileValidator.isValidPath(filepath)) {
       final String[] cmdCommand = {"java", "-jar", checkstylePath, "-c", checkstyleRuleset, filepath};
-      return new StringBuilder(CommandLine.runShellCommand(cmdCommand));    
+      return new StringBuilder(CommandLineExecutor.runShellCommand(cmdCommand));
+    } else {
+      throw new FilePathNotValidException("Error: incorrect path/file not found"); 
+    }    
   } 
 
   @Override

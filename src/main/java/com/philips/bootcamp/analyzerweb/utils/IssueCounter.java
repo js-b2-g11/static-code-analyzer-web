@@ -8,6 +8,6 @@ public class IssueCounter {
 	
 	public static int countIssuesIntegratedAnalyzer(StringBuilder str) {
 		String[] lines = str.toString().split("\r\n|\r|\n");
-		return lines.length - 4;
+		return lines.length - 3;
 	}
 }

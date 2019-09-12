@@ -6,6 +6,7 @@ package com.philips.bootcamp.analyzerweb.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import com.philips.bootcamp.analyzerweb.exceptions.FilePathNotValidException;
 import com.philips.bootcamp.analyzerweb.model.Tool;
 import com.philips.bootcamp.analyzerweb.utils.FileValidator;
 
@@ -18,7 +19,7 @@ public class IntegratedAnalyzer extends Tool{
   }
 
   @Override
-  public StringBuilder generateReport() throws RuntimeException {
+  public StringBuilder generateReport() throws FilePathNotValidException, IOException, InterruptedException {
     StringBuilder finalReport = new StringBuilder();
     for (final Tool tool : tools) {
       finalReport.append(tool.generateReport());

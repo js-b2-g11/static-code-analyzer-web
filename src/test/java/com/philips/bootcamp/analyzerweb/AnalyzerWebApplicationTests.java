@@ -5,7 +5,7 @@ package com.philips.bootcamp.analyzerweb;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -17,12 +17,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.zeroturnaround.exec.InvalidExitValueException;
-
+import com.philips.bootcamp.analyzerweb.exceptions.FilePathNotValidException;
 import com.philips.bootcamp.analyzerweb.service.CheckstyleAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.IntegratedAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.PmdAnalyzer;
-import com.philips.bootcamp.analyzerweb.utils.CommandLine;
+import com.philips.bootcamp.analyzerweb.utils.ProcessExecutorCommandLine;
 import com.philips.bootcamp.analyzerweb.utils.PathEncoder;
 import com.philips.bootcamp.analyzerweb.utils.Values;
 
@@ -31,7 +30,7 @@ import com.philips.bootcamp.analyzerweb.utils.Values;
 public class AnalyzerWebApplicationTests {
 
   @Test
-  public void generateReport_CheckstyleAnalyzer_ValidFilePath_GeneratesReportSuccessfully() throws InterruptedException {
+  public void generateReport_CheckstyleAnalyzer_ValidFilePath_GeneratesReportSuccessfully() throws InterruptedException, FilePathNotValidException, IOException {
       CheckstyleAnalyzer checkstyleTool = new CheckstyleAnalyzer(Values.TEST_VALID_FILE_PATH, Values.CHECKSTYLE_PATH,
               Values.CHECKSTYLE_RULESET);
       StringBuilder output = null;      
@@ -40,7 +39,7 @@ public class AnalyzerWebApplicationTests {
   }
   
   @Test
-  public void generateReport_PmdAnalyzer_ValidFilePath_GeneratesReportSuccessfully() {
+  public void generateReport_PmdAnalyzer_ValidFilePath_GeneratesReportSuccessfully() throws FilePathNotValidException, IOException, InterruptedException {
       PmdAnalyzer pmdTool = new PmdAnalyzer(Values.TEST_VALID_FILE_PATH, Values.PMD_RULESET);
       StringBuilder output = null;
       output = pmdTool.generateReport();
@@ -48,7 +47,7 @@ public class AnalyzerWebApplicationTests {
   }
   
   @Test
-  public void generateReport_IntegratedAnalyzer_ValidFilePath_GeneratesReportSuccessfully() {
+  public void generateReport_IntegratedAnalyzer_ValidFilePath_GeneratesReportSuccessfully() throws FilePathNotValidException, IOException, InterruptedException {
       PmdAnalyzer pmdTool = new PmdAnalyzer(Values.TEST_VALID_FILE_PATH, Values.PMD_RULESET);
       CheckstyleAnalyzer checkstyleTool = new CheckstyleAnalyzer(Values.TEST_VALID_FILE_PATH, Values.CHECKSTYLE_PATH,
           Values.CHECKSTYLE_RULESET);
@@ -101,21 +100,21 @@ public class AnalyzerWebApplicationTests {
 		assertEquals(404, result.getStatusCodeValue());
 	}
 
-	@Test(expected = CommandLine.ShellCommandException.class)
-	public void generateReport_CheckstyleAnalyzer_InvalidFilePath_ExceptionThrown() {
+	@Test(expected = FilePathNotValidException.class)
+	public void generateReport_CheckstyleAnalyzer_InvalidFilePath_ExceptionThrown() throws FilePathNotValidException, IOException, InterruptedException {
 		CheckstyleAnalyzer checkstyleTool = new CheckstyleAnalyzer(Values.TEST_INVALID_FILE_PATH, Values.CHECKSTYLE_PATH,
 				Values.CHECKSTYLE_RULESET);
 		checkstyleTool.generateReport();
 	}
 	
-	@Test(expected = RuntimeException.class)
-	public void generateReport_PmdAnalyzer_InvalidFilePath_ExceptionThrown() {
+	@Test(expected = FilePathNotValidException.class)
+	public void generateReport_PmdAnalyzer_InvalidFilePath_ExceptionThrown() throws FilePathNotValidException, IOException, InterruptedException {
 		PmdAnalyzer pmdTool = new PmdAnalyzer(Values.TEST_INVALID_FILE_PATH, Values.PMD_RULESET);
 		pmdTool.generateReport();
 	}
 	
-	@Test(expected = RuntimeException.class)
-	public void generateReport_IntegratedAnalyzer_InvalidFilePath_ExceptionThrown() {
+	@Test(expected = FilePathNotValidException.class)
+	public void generateReport_IntegratedAnalyzer_InvalidFilePath_ExceptionThrown() throws FilePathNotValidException, IOException, InterruptedException {
 		PmdAnalyzer pmdTool = new PmdAnalyzer(Values.TEST_INVALID_FILE_PATH, Values.PMD_RULESET);
 		CheckstyleAnalyzer checkstyleTool = new CheckstyleAnalyzer(Values.TEST_INVALID_FILE_PATH, Values.CHECKSTYLE_PATH,
 				Values.CHECKSTYLE_RULESET);
