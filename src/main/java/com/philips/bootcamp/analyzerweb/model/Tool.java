@@ -4,9 +4,8 @@
 package com.philips.bootcamp.analyzerweb.model;
 
 import java.io.IOException;
-
-import com.philips.bootcamp.analyzerweb.utils.CommandLine.ShellCommandException;
-
+import com.philips.bootcamp.analyzerweb.exceptions.FilePathNotValidException;
+import com.philips.bootcamp.analyzerweb.utils.ProcessExecutorCommandLine.ShellCommandException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,7 +23,7 @@ public abstract class Tool {
     this.filepath = filepath;
   }
 
-  public abstract StringBuilder generateReport();
+  public abstract StringBuilder generateReport() throws FilePathNotValidException, IOException, InterruptedException ;  
 
   public void add(Tool tool) {
     throw new UnsupportedOperationException("Cannot add tool by default");

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import com.philips.bootcamp.analyzerweb.exceptions.FilePathNotValidException;
 import com.philips.bootcamp.analyzerweb.service.CheckstyleAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.IntegratedAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.PmdAnalyzer;
@@ -25,30 +26,30 @@ import com.philips.bootcamp.analyzerweb.utils.Values;
 public class StaticCodeAnalyzerController {
 
   @GetMapping("/api/cs/")
-  public ResponseEntity<StringBuilder> genCheckstyle(@RequestParam("path") String path) throws IOException {
+  public ResponseEntity<StringBuilder> genCheckstyle(@RequestParam("path") String path) throws IOException, InterruptedException {
     final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
     final CheckstyleAnalyzer cs = new CheckstyleAnalyzer(filepath, Values.CHECKSTYLE_PATH, 
     		Values.CHECKSTYLE_RULESET);    
     try {
 		return new ResponseEntity<>(cs.generateReport() ,HttpStatus.OK);
-	} catch (RuntimeException e) {
+	} catch (FilePathNotValidException e) {
 		return new ResponseEntity<>(new StringBuilder(Values.ERROR_FILE_NOT_FOUND) ,HttpStatus.NOT_FOUND);
 	}
   }
 
   @GetMapping("/api/pmd/")
-  public ResponseEntity<StringBuilder> genPmd(@RequestParam("path") String path)throws IOException{
+  public ResponseEntity<StringBuilder> genPmd(@RequestParam("path") String path)throws IOException, InterruptedException{
     final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
     final PmdAnalyzer pmd = new PmdAnalyzer(filepath, Values.PMD_RULESET);
     try {
 		return new ResponseEntity<>(pmd.generateReport() ,HttpStatus.OK);
-	} catch (RuntimeException e) {
+	} catch (FilePathNotValidException e) {
 		return new ResponseEntity<>(new StringBuilder(Values.ERROR_FILE_NOT_FOUND),HttpStatus.NOT_FOUND);
 	}
   }
   
   @GetMapping("/api/all/")
-  public ResponseEntity<StringBuilder> genIntegratedReport(@RequestParam("path") String path)throws IOException{
+  public ResponseEntity<StringBuilder> genIntegratedReport(@RequestParam("path") String path)throws IOException, InterruptedException{
     final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
     final CheckstyleAnalyzer checkstyleAnalyzer = new CheckstyleAnalyzer(filepath, Values.CHECKSTYLE_PATH, 
     		Values.CHECKSTYLE_RULESET);
@@ -66,7 +67,7 @@ public class StaticCodeAnalyzerController {
     		output.insert(0, "NO-GO\n");
     	}
     	return new ResponseEntity<>(output ,HttpStatus.OK);
-	} catch (RuntimeException e) {
+	} catch (FilePathNotValidException e) {
 		return new ResponseEntity<>(new StringBuilder(Values.ERROR_FILE_NOT_FOUND), HttpStatus.NOT_FOUND);
 	}
   }

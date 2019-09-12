@@ -20,9 +20,9 @@ import org.zeroturnaround.exec.ProcessResult;
 /**
  * Process execution utility methods.
  */
-public class CommandLine {
+public class ProcessExecutorCommandLine {
 
-	private static final Logger LOGGER = getLogger(CommandLine.class);
+	private static final Logger LOGGER = getLogger(ProcessExecutorCommandLine.class);
 
 	/**
 	 * Run a shell command synchronously.
@@ -40,7 +40,8 @@ public class CommandLine {
 			result = new ProcessExecutor().command(command).readOutput(true).exitValueNormal().execute();
 
 			return result.outputUTF8().trim();
-		} catch (IOException | InterruptedException | TimeoutException | InvalidExitValueException e) {			
+		} catch (IOException | InterruptedException | TimeoutException | InvalidExitValueException e) {
+		    Thread.currentThread().interrupt();
 			throw new ShellCommandException("Exception when executing " + joinedCommand, e);
 		}
 	}

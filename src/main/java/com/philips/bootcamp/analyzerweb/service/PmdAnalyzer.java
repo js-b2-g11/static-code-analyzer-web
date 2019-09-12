@@ -3,10 +3,14 @@
  */
 package com.philips.bootcamp.analyzerweb.service;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import com.philips.bootcamp.analyzerweb.exceptions.FilePathNotValidException;
 import com.philips.bootcamp.analyzerweb.model.Tool;
-import com.philips.bootcamp.analyzerweb.utils.CommandLine;
+import com.philips.bootcamp.analyzerweb.utils.ProcessExecutorCommandLine;
 import com.philips.bootcamp.analyzerweb.utils.ConfigFileReader;
 import com.philips.bootcamp.analyzerweb.utils.FileValidator;
+import com.philips.bootcamp.analyzerweb.utils.CommandLineExecutor;
 
 public class PmdAnalyzer extends Tool{
 
@@ -24,9 +28,14 @@ public class PmdAnalyzer extends Tool{
   }
 
   @Override
-  public StringBuilder generateReport() { 
+  public StringBuilder generateReport() throws FilePathNotValidException, IOException, InterruptedException { 
+    if (FileValidator.isValidPath(filepath)) {
       final String[] cmdCommand = {"pmd.bat", "-d", filepath, "-R", pmdRuleset, "-failOnViolation", "false"};
-      return new StringBuilder(CommandLine.runShellCommand(cmdCommand));
+      return new StringBuilder(CommandLineExecutor.runShellCommand(cmdCommand));
+    } else {
+      throw new FilePathNotValidException("Error: incorrect path/file not found");
+    }
+      
   }
 
   @Override
