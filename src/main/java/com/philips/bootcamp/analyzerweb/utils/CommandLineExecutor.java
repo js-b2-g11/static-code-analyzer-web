@@ -1,3 +1,6 @@
+/*
+ * The copyright of this file belongs to Koninklijke Philips N.V., 2019.
+ */
 package com.philips.bootcamp.analyzerweb.utils;
 
 import java.io.BufferedReader;
@@ -6,24 +9,23 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class CommandLineExecutor {
-	private CommandLineExecutor() {
-		
-	}
+  private CommandLineExecutor() {
+
+  }
   public static StringBuilder runShellCommand(String[] args)
-      throws IOException, InterruptedException {    
-    ProcessBuilder builder = new ProcessBuilder();
+      throws IOException {
+    final ProcessBuilder builder = new ProcessBuilder();
     builder.command(args);
     builder.directory(new File(System.getProperty("user.home")));
-    Process process = builder.start();
-    BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+    final Process process = builder.start();
+    final BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
     String line;
-    StringBuilder cmdOutput = new StringBuilder();
+    final StringBuilder cmdOutput = new StringBuilder();
     while ((line = br.readLine()) != null) {
       cmdOutput.append(String.format("%s%n", line));
     }
-    int exitCode = process.waitFor();
-    System.out.println("Exit code: "+exitCode);
-//    assert exitCode == 0;
+    //    int exitCode = process.waitFor();
+    //    assert exitCode == 0;
     return cmdOutput;
   }
 }

@@ -19,25 +19,14 @@ public class IntegratedAnalyzer extends Tool{
 
   @Override
   public StringBuilder generateReport() throws FilePathNotValidException, IOException, InterruptedException {
-    StringBuilder finalReport = new StringBuilder();
+    final StringBuilder finalReport = new StringBuilder();
     for (final Tool tool : tools) {
-      StringBuilder toolReport = tool.generateReport();
+      final StringBuilder toolReport = tool.generateReport();
       issueCount = countIssues(toolReport, tool);
       finalReport.append(toolReport);
-      finalReport.append("\n");      
+      finalReport.append("\n");
     }
     return finalReport;
-  }
-
-  @Override
-  public String toString() {
-    final StringBuilder builder = new StringBuilder("Integrated Analyzer: ");
-    builder.append(filepath);
-    builder.append(",");
-    builder.append(tools);
-    builder.append(",");
-
-    return builder.toString();
   }
 
   @Override
@@ -54,6 +43,12 @@ public class IntegratedAnalyzer extends Tool{
   public int countIssues(StringBuilder report, Tool tool) {
     issueCount += tool.countIssues(report, tool);
     return issueCount;
+  }
+
+  @Override
+  public String toString() {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }

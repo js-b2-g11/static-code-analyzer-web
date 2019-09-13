@@ -1,3 +1,6 @@
+/*
+ * The copyright of this file belongs to Koninklijke Philips N.V., 2019.
+ */
 package com.philips.bootcamp.analyzerweb.service;
 
 import java.io.File;
@@ -12,9 +15,9 @@ import com.philips.bootcamp.analyzerweb.utils.FileValidator;
 public class SimilarityAnalyzer extends Tool {
 
   String simianPath;
-  
+
   public SimilarityAnalyzer(String filepath, String simianPath) {
-    super(filepath);    
+    super(filepath);
     this.simianPath = simianPath;
   }
 
@@ -26,7 +29,7 @@ public class SimilarityAnalyzer extends Tool {
         filepath += "*.java";
       }
       final String[] cmdCommand = {"java", "-jar", simianPath, filepath};
-      StringBuilder outputReport = new StringBuilder(CommandLineExecutor.runShellCommand(cmdCommand));
+      final StringBuilder outputReport = new StringBuilder(CommandLineExecutor.runShellCommand(cmdCommand));
       issueCount = countIssues(outputReport, this);
       return outputReport;
     } else {
@@ -34,26 +37,22 @@ public class SimilarityAnalyzer extends Tool {
     }
   }
 
-  @Override
-  public String toString() {
-    final StringBuilder builder = new StringBuilder("Similarity Analyzer: ");
-    builder.append(filepath);
-    builder.append(",");
-    builder.append(simianPath);
-    builder.append(",");
-    builder.append(issueCount);
-    return builder.toString();
-  }
 
   @Override
   public int countIssues(StringBuilder report, Tool tool) {
-    Pattern p = Pattern.compile("[0-9]+(?= duplicate lines)");
-    Matcher m = p.matcher(report.toString());
+    final Pattern p = Pattern.compile("[0-9]+(?= duplicate lines)");
+    final Matcher m = p.matcher(report.toString());
     int simianCount = 0;
     while (m.find()) {
       simianCount = Integer.parseInt(m.group());
     }
     return simianCount;
+  }
+
+  @Override
+  public String toString() {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }

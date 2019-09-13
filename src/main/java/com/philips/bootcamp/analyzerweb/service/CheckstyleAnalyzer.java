@@ -4,9 +4,9 @@
 package com.philips.bootcamp.analyzerweb.service;
 
 import java.io.IOException;
-import com.philips.bootcamp.analyzerweb.utils.CommandLineExecutor;
 import com.philips.bootcamp.analyzerweb.exceptions.FilePathNotValidException;
 import com.philips.bootcamp.analyzerweb.model.Tool;
+import com.philips.bootcamp.analyzerweb.utils.CommandLineExecutor;
 import com.philips.bootcamp.analyzerweb.utils.ConfigFileReader;
 import com.philips.bootcamp.analyzerweb.utils.FileValidator;
 
@@ -18,7 +18,7 @@ public class CheckstyleAnalyzer extends Tool{
   public CheckstyleAnalyzer(String filepath, String checkstylePath, String checkstyleRuleset) {
     super(filepath);
     this.checkstylePath = checkstylePath;
-    this.checkstyleRuleset = checkstyleRuleset;    
+    this.checkstyleRuleset = checkstyleRuleset;
   }
 
   public static CheckstyleAnalyzer getObjectFromConfigFile() {
@@ -32,32 +32,25 @@ public class CheckstyleAnalyzer extends Tool{
   public StringBuilder generateReport() throws FilePathNotValidException, IOException, InterruptedException {
     if (FileValidator.isValidPath(filepath)) {
       final String[] cmdCommand = {"java", "-jar", checkstylePath, "-c", checkstyleRuleset, filepath};
-      StringBuilder outputReport = new StringBuilder(CommandLineExecutor.runShellCommand(cmdCommand));
+      final StringBuilder outputReport = new StringBuilder(CommandLineExecutor.runShellCommand(cmdCommand));
       issueCount = countIssues(outputReport, this);
       return outputReport;
     } else {
-      throw new FilePathNotValidException("Error: incorrect path/file not found"); 
-    }    
-  } 
-
-  @Override
-  public String toString() {
-    final StringBuilder builder = new StringBuilder("Checkstyle Analyzer: ");
-    builder.append(filepath);
-    builder.append(",");
-    builder.append(checkstylePath);
-    builder.append(",");
-    builder.append(checkstyleRuleset);
-    builder.append(",");
-    builder.append(issueCount);
-
-    return builder.toString();
+      throw new FilePathNotValidException("Error: incorrect path/file not found");
+    }
   }
+
 
   @Override
   public int countIssues(StringBuilder report, Tool tool) {
-    String[] lines = report.toString().split("\r\n|\r|\n");
+    final String[] lines = report.toString().split("\r\n|\r|\n");
     return lines.length - 2;
+  }
+
+  @Override
+  public String toString() {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }

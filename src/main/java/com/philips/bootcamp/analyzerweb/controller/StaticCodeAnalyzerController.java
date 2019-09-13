@@ -16,7 +16,6 @@ import com.philips.bootcamp.analyzerweb.service.CheckstyleAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.IntegratedAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.PmdAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.SimilarityAnalyzer;
-import com.philips.bootcamp.analyzerweb.utils.IssueCounter;
 import com.philips.bootcamp.analyzerweb.utils.JavaFileLister;
 import com.philips.bootcamp.analyzerweb.utils.Values;
 
@@ -27,13 +26,13 @@ public class StaticCodeAnalyzerController {
   @GetMapping("/api/cs/")
   public ResponseEntity<StringBuilder> genCheckstyle(@RequestParam("path") String path) throws IOException, InterruptedException {
     final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
-    final CheckstyleAnalyzer cs = new CheckstyleAnalyzer(filepath, Values.CHECKSTYLE_PATH, 
-    		Values.CHECKSTYLE_RULESET);    
+    final CheckstyleAnalyzer cs = new CheckstyleAnalyzer(filepath, Values.CHECKSTYLE_PATH,
+        Values.CHECKSTYLE_RULESET);
     try {
-		return new ResponseEntity<>(cs.generateReport() ,HttpStatus.OK);
-	} catch (FilePathNotValidException e) {
-		return new ResponseEntity<>(new StringBuilder(Values.ERROR_FILE_NOT_FOUND) ,HttpStatus.NOT_FOUND);
-	}
+      return new ResponseEntity<>(cs.generateReport() ,HttpStatus.OK);
+    } catch (final FilePathNotValidException e) {
+      return new ResponseEntity<>(new StringBuilder(Values.ERROR_FILE_NOT_FOUND) ,HttpStatus.NOT_FOUND);
+    }
   }
 
   @GetMapping("/api/pmd/")
@@ -41,47 +40,47 @@ public class StaticCodeAnalyzerController {
     final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
     final PmdAnalyzer pmd = new PmdAnalyzer(filepath, Values.PMD_RULESET);
     try {
-		return new ResponseEntity<>(pmd.generateReport() ,HttpStatus.OK);
-	} catch (FilePathNotValidException e) {
-		return new ResponseEntity<>(new StringBuilder(Values.ERROR_FILE_NOT_FOUND),HttpStatus.NOT_FOUND);
-	}
+      return new ResponseEntity<>(pmd.generateReport() ,HttpStatus.OK);
+    } catch (final FilePathNotValidException e) {
+      return new ResponseEntity<>(new StringBuilder(Values.ERROR_FILE_NOT_FOUND),HttpStatus.NOT_FOUND);
+    }
   }
-  
+
   @GetMapping("/api/sim/")
   public ResponseEntity<StringBuilder> genSimian(@RequestParam("path") String path)throws IOException, InterruptedException{
     final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
-    SimilarityAnalyzer simianAnalyzer = new SimilarityAnalyzer(filepath, Values.SIMIAN_PATH);
+    final SimilarityAnalyzer simianAnalyzer = new SimilarityAnalyzer(filepath, Values.SIMIAN_PATH);
     try {
-        return new ResponseEntity<>(simianAnalyzer.generateReport() ,HttpStatus.OK);
-    } catch (FilePathNotValidException e) {
-        return new ResponseEntity<>(new StringBuilder(Values.ERROR_FILE_NOT_FOUND),HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>(simianAnalyzer.generateReport() ,HttpStatus.OK);
+    } catch (final FilePathNotValidException e) {
+      return new ResponseEntity<>(new StringBuilder(Values.ERROR_FILE_NOT_FOUND),HttpStatus.NOT_FOUND);
     }
   }
-  
+
   @GetMapping("/api/all/")
   public ResponseEntity<StringBuilder> genIntegratedReport(@RequestParam("path") String path)throws IOException, InterruptedException{
     final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
-    final CheckstyleAnalyzer checkstyleAnalyzer = new CheckstyleAnalyzer(filepath, Values.CHECKSTYLE_PATH, 
-    		Values.CHECKSTYLE_RULESET);
+    final CheckstyleAnalyzer checkstyleAnalyzer = new CheckstyleAnalyzer(filepath, Values.CHECKSTYLE_PATH,
+        Values.CHECKSTYLE_RULESET);
     final PmdAnalyzer pmdAnalyzer = new PmdAnalyzer(filepath, Values.PMD_RULESET);
-    SimilarityAnalyzer simAnalyzer = new SimilarityAnalyzer(filepath, Values.SIMIAN_PATH);
-    IntegratedAnalyzer integratedAnalyzer = new IntegratedAnalyzer(filepath);
+    final SimilarityAnalyzer simAnalyzer = new SimilarityAnalyzer(filepath, Values.SIMIAN_PATH);
+    final IntegratedAnalyzer integratedAnalyzer = new IntegratedAnalyzer(filepath);
     integratedAnalyzer.add(checkstyleAnalyzer);
     integratedAnalyzer.add(pmdAnalyzer);
     integratedAnalyzer.add(simAnalyzer);
     try {
-    	StringBuilder output = integratedAnalyzer.generateReport();
-    	int countOfIssues = integratedAnalyzer.getIssueCount();
-    	output.insert(0, String.format("Count of Issues = %d%n", countOfIssues));
-    	if (countOfIssues == 0) {
-    		output.insert(0, "GO\n");
-    	} else {
-    		output.insert(0, "NO-GO\n");
-    	}
-    	return new ResponseEntity<>(output ,HttpStatus.OK);
-	} catch (FilePathNotValidException e) {
-		return new ResponseEntity<>(new StringBuilder(Values.ERROR_FILE_NOT_FOUND), HttpStatus.NOT_FOUND);
-	}
+      final StringBuilder output = integratedAnalyzer.generateReport();
+      final int countOfIssues = integratedAnalyzer.getIssueCount();
+      output.insert(0, String.format("Count of Issues = %d%n", countOfIssues));
+      if (countOfIssues == 0) {
+        output.insert(0, "GO\n");
+      } else {
+        output.insert(0, "NO-GO\n");
+      }
+      return new ResponseEntity<>(output ,HttpStatus.OK);
+    } catch (final FilePathNotValidException e) {
+      return new ResponseEntity<>(new StringBuilder(Values.ERROR_FILE_NOT_FOUND), HttpStatus.NOT_FOUND);
+    }
   }
 
   @GetMapping("/api")
