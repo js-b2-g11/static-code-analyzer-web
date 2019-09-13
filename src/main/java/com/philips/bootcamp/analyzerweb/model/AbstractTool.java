@@ -4,7 +4,7 @@
 package com.philips.bootcamp.analyzerweb.model;
 
 import java.io.IOException;
-import java.util.concurrent.TimeoutException;
+import com.philips.bootcamp.analyzerweb.exceptions.FilePathNotValidException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,7 +26,7 @@ public abstract class AbstractTool {
     this.filepath = filepath;
   }
 
-  public abstract StringBuilder generateReport() throws IOException, TimeoutException, InterruptedException;
+  public abstract StringBuilder generateReport() throws IOException, InterruptedException, FilePathNotValidException;
 
   public abstract boolean isValidReport();
 

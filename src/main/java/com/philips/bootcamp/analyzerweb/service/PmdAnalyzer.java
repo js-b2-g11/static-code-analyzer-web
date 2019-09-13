@@ -4,9 +4,11 @@
 package com.philips.bootcamp.analyzerweb.service;
 
 import java.io.IOException;
-import java.util.concurrent.TimeoutException;
+import com.philips.bootcamp.analyzerweb.exceptions.FilePathNotValidException;
 import com.philips.bootcamp.analyzerweb.model.AbstractTool;
-import com.philips.bootcamp.analyzerweb.utils.CommandLineUtil;
+import com.philips.bootcamp.analyzerweb.utils.CommandLineExecutor;
+import com.philips.bootcamp.analyzerweb.utils.FileValidator;
+
 
 public class PmdAnalyzer extends AbstractTool{
 
@@ -19,17 +21,19 @@ public class PmdAnalyzer extends AbstractTool{
   }
 
   @Override
-  public StringBuilder generateReport() throws IOException, TimeoutException, InterruptedException {
-
-    final String[] cmdCommand = {"pmd.bat", "-d", filepath, "-f", "html", "-R", pmdRuleset, "-failOnViolation", "false"};
-    return new StringBuilder(CommandLineUtil.runShellCommand(cmdCommand));
-
+  public StringBuilder generateReport() throws FilePathNotValidException, IOException, InterruptedException {
+    if (FileValidator.isValidPath(filepath)) {
+      final String[] cmdCommand = {"pmd.bat", "-d", filepath, "-R", pmdRuleset, "-failOnViolation", "false"};
+      return new StringBuilder(CommandLineExecutor.runShellCommand(cmdCommand));
+    } else {
+      throw new FilePathNotValidException("Error: incorrect path/file not found");
+    }
   }
 
 
   @Override
   public boolean isValidReport() {
-    // TODO Auto-generated method stub
+
     return false;
   }
 

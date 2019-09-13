@@ -4,9 +4,8 @@
 package com.philips.bootcamp.analyzerweb.service;
 
 import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 import com.philips.bootcamp.analyzerweb.model.AbstractTool;
-import com.philips.bootcamp.analyzerweb.utils.CommandLineUtil;
+import com.philips.bootcamp.analyzerweb.utils.CommandLineExecutor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,10 +23,10 @@ public class CheckstyleAnalyzer extends AbstractTool{
   }
 
   @Override
-  public StringBuilder generateReport() throws IOException, TimeoutException, InterruptedException  {
+  public StringBuilder generateReport() throws IOException, InterruptedException {
 
-    final String[] cmdCommand = {"java", "-jar", checkstylePath, "-c", checkstyleRuleset, filepath};
-    return new StringBuilder (CommandLineUtil.runShellCommand(cmdCommand));
+    final String[] cmdCommand = {"java", "-jar", checkstylePath,  "-c", checkstyleRuleset, filepath};
+    return new StringBuilder (CommandLineExecutor.runShellCommand(cmdCommand));
   }
 
   @Override
