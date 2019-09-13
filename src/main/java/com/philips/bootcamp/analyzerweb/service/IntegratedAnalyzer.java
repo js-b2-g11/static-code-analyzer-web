@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import com.philips.bootcamp.analyzerweb.exceptions.FilePathNotValidException;
 import com.philips.bootcamp.analyzerweb.model.Tool;
-import com.philips.bootcamp.analyzerweb.utils.FileValidator;
 
 public class IntegratedAnalyzer extends Tool{
 

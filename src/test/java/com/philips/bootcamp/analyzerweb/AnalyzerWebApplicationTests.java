@@ -21,7 +21,6 @@ import com.philips.bootcamp.analyzerweb.exceptions.FilePathNotValidException;
 import com.philips.bootcamp.analyzerweb.service.CheckstyleAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.IntegratedAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.PmdAnalyzer;
-import com.philips.bootcamp.analyzerweb.utils.ProcessExecutorCommandLine;
 import com.philips.bootcamp.analyzerweb.utils.PathEncoder;
 import com.philips.bootcamp.analyzerweb.utils.Values;
 

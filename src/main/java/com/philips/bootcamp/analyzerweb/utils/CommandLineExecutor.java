@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class CommandLineExecutor {
+	private CommandLineExecutor() {
+		
+	}
   public static StringBuilder runShellCommand(String[] args)
       throws IOException, InterruptedException {    
     ProcessBuilder builder = new ProcessBuilder();
