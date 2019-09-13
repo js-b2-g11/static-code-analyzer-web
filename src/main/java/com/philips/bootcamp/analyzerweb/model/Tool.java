@@ -5,8 +5,6 @@ package com.philips.bootcamp.analyzerweb.model;
 
 import java.io.IOException;
 import com.philips.bootcamp.analyzerweb.exceptions.FilePathNotValidException;
-import com.philips.bootcamp.analyzerweb.utils.IssueCounter;
-import com.philips.bootcamp.analyzerweb.utils.ProcessExecutorCommandLine.ShellCommandException;
 import lombok.Getter;
 import lombok.Setter;
 

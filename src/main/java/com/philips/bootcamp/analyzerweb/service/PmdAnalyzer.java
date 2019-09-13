@@ -3,11 +3,9 @@
  */
 package com.philips.bootcamp.analyzerweb.service;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import com.philips.bootcamp.analyzerweb.exceptions.FilePathNotValidException;
 import com.philips.bootcamp.analyzerweb.model.Tool;
-import com.philips.bootcamp.analyzerweb.utils.ProcessExecutorCommandLine;
 import com.philips.bootcamp.analyzerweb.utils.ConfigFileReader;
 import com.philips.bootcamp.analyzerweb.utils.FileValidator;
 import com.philips.bootcamp.analyzerweb.utils.CommandLineExecutor;

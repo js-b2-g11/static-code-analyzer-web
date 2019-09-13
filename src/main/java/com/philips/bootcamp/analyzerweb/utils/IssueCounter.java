@@ -4,6 +4,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class IssueCounter {
+
+	private IssueCounter() {
+	}
+  
 	public static int countIssuesCheckstyleAnalyzer(StringBuilder str) {
 		String[] lines = str.toString().split("\r\n|\r|\n");
 		return lines.length - 2;

@@ -21,6 +21,8 @@ import org.zeroturnaround.exec.ProcessResult;
  * Process execution utility methods.
  */
 public class ProcessExecutorCommandLine {
+	private ProcessExecutorCommandLine() {
+	}
 
 	private static final Logger LOGGER = getLogger(ProcessExecutorCommandLine.class);
 

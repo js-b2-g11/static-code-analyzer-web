@@ -5,9 +5,13 @@ package com.philips.bootcamp.analyzerweb.utils;
 
 import java.io.File;
 
+import org.apache.logging.log4j.Logger;
+
 public class FileValidator {
-
-
+	private static Logger logger;
+	private FileValidator() {
+		
+	}
   public static boolean isValidPath(String filepath) {
 
     boolean exists = false;
@@ -19,7 +23,7 @@ public class FileValidator {
     }
     catch(final Exception e)
     {
-      System.out.println("Hey, an error here!");
+      logger.debug("Hey, an error here!");
       exists = false;
     }
     return exists;
