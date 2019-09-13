@@ -22,5 +22,7 @@ public class Values {
   
   public static final String TEST_VALID_FILE_PATH = reader.getConfigurationValue("test_valid_path");
   public static final String TEST_INVALID_FILE_PATH = reader.getConfigurationValue("test_invalid_path");
+  
+  public static final String SIMIAN_PATH = reader.getConfigurationValue("simianPath");
 
 }

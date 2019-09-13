@@ -16,7 +16,7 @@ public class PmdAnalyzer extends Tool{
 
   public PmdAnalyzer(String filepath, String pmdRuleset) {
     super(filepath);
-    this.pmdRuleset = pmdRuleset;
+    this.pmdRuleset = pmdRuleset;    
   }
 
   public static PmdAnalyzer getObjectFromConfigFile() {
@@ -29,7 +29,9 @@ public class PmdAnalyzer extends Tool{
   public StringBuilder generateReport() throws FilePathNotValidException, IOException, InterruptedException { 
     if (FileValidator.isValidPath(filepath)) {
       final String[] cmdCommand = {"pmd.bat", "-d", filepath, "-R", pmdRuleset, "-failOnViolation", "false"};
-      return new StringBuilder(CommandLineExecutor.runShellCommand(cmdCommand));
+      StringBuilder outputReport = new StringBuilder(CommandLineExecutor.runShellCommand(cmdCommand));
+      issueCount = countIssues(outputReport, this);
+      return outputReport;
     } else {
       throw new FilePathNotValidException("Error: incorrect path/file not found");
     }
@@ -42,8 +44,16 @@ public class PmdAnalyzer extends Tool{
     builder.append(filepath);
     builder.append(",");
     builder.append(pmdRuleset);
+    builder.append(",");
+    builder.append(issueCount);
 
     return builder.toString();
+  }
+
+  @Override
+  public int countIssues(StringBuilder report, Tool tool) {
+    String[] lines = report.toString().split("\r\n|\r|\n");
+    return lines.length;
   }
 
 }

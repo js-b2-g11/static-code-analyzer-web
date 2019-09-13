@@ -13,6 +13,11 @@ import lombok.Setter;
 public abstract class Tool {
 
   protected String filepath;
+  protected int issueCount;
+
+  public int getIssueCount() {
+    return issueCount;
+  }
 
   public String getFilepath() {
     return filepath;
@@ -20,6 +25,7 @@ public abstract class Tool {
 
   public Tool(String filepath) {
     this.filepath = filepath;
+    this.issueCount = 0;
   }
 
   public abstract StringBuilder generateReport() throws FilePathNotValidException, IOException, InterruptedException ;  
@@ -34,4 +40,6 @@ public abstract class Tool {
 
   @Override
   public abstract String toString();
+  
+  public abstract int countIssues(StringBuilder report, Tool tool); 
 }

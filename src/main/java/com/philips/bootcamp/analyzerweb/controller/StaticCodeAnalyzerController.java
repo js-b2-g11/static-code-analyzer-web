@@ -15,6 +15,7 @@ import com.philips.bootcamp.analyzerweb.exceptions.FilePathNotValidException;
 import com.philips.bootcamp.analyzerweb.service.CheckstyleAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.IntegratedAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.PmdAnalyzer;
+import com.philips.bootcamp.analyzerweb.service.SimilarityAnalyzer;
 import com.philips.bootcamp.analyzerweb.utils.IssueCounter;
 import com.philips.bootcamp.analyzerweb.utils.JavaFileLister;
 import com.philips.bootcamp.analyzerweb.utils.Values;
@@ -46,18 +47,31 @@ public class StaticCodeAnalyzerController {
 	}
   }
   
+  @GetMapping("/api/sim/")
+  public ResponseEntity<StringBuilder> genSimian(@RequestParam("path") String path)throws IOException, InterruptedException{
+    final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
+    SimilarityAnalyzer simianAnalyzer = new SimilarityAnalyzer(filepath, Values.SIMIAN_PATH);
+    try {
+        return new ResponseEntity<>(simianAnalyzer.generateReport() ,HttpStatus.OK);
+    } catch (FilePathNotValidException e) {
+        return new ResponseEntity<>(new StringBuilder(Values.ERROR_FILE_NOT_FOUND),HttpStatus.NOT_FOUND);
+    }
+  }
+  
   @GetMapping("/api/all/")
   public ResponseEntity<StringBuilder> genIntegratedReport(@RequestParam("path") String path)throws IOException, InterruptedException{
     final String filepath = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
     final CheckstyleAnalyzer checkstyleAnalyzer = new CheckstyleAnalyzer(filepath, Values.CHECKSTYLE_PATH, 
     		Values.CHECKSTYLE_RULESET);
     final PmdAnalyzer pmdAnalyzer = new PmdAnalyzer(filepath, Values.PMD_RULESET);
+    SimilarityAnalyzer simAnalyzer = new SimilarityAnalyzer(filepath, Values.SIMIAN_PATH);
     IntegratedAnalyzer integratedAnalyzer = new IntegratedAnalyzer(filepath);
     integratedAnalyzer.add(checkstyleAnalyzer);
     integratedAnalyzer.add(pmdAnalyzer);
+    integratedAnalyzer.add(simAnalyzer);
     try {
     	StringBuilder output = integratedAnalyzer.generateReport();
-    	int countOfIssues = IssueCounter.countIssuesIntegratedAnalyzer(output);
+    	int countOfIssues = integratedAnalyzer.getIssueCount();
     	output.insert(0, String.format("Count of Issues = %d%n", countOfIssues));
     	if (countOfIssues == 0) {
     		output.insert(0, "GO\n");
