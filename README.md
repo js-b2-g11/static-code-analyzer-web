@@ -1,4 +1,4 @@
-##static-code-analyzer-web
+## static-code-analyzer-web
 
 A reworked version of the static-code-analyzer with web API 
 
@@ -15,7 +15,7 @@ i) Go To Help-> Eclipse Marketplace and search for checkstyle.
 ii) Click on install button associated with the title "Check style Plug-in". 
 iii) Follow the instructions and eclipse will install Checkstyle. You need to restart eclipse start working with Checkstyle.
 
-##Steps to install PMD plug-in by Eclipse Marketplace: 
+## Steps to install PMD plug-in by Eclipse Marketplace: 
 i) In Eclipse, click on Help -> Install New Software... 
 ii) Click on Add.. 
 iii) Enter the following: Name: PMD for Eclipse Update Site. URL: https://dl.bintray.com/pmd/pmd-eclipse-plugin/updates/ and click OK. 
