@@ -73,8 +73,7 @@ public class StaticCodeAnalyzerController {
     integratedAnalyzer.add(simAnalyzer);
     try {
     	StringBuilder output = integratedAnalyzer.generateReport();
-    	int countOfIssues = IssueCounter.countIssuesIntegratedAnalyzer(checkstyleAnalyzer.generateReport(), 
-    	    pmdAnalyzer.generateReport(),simAnalyzer.generateReport());
+    	int countOfIssues = integratedAnalyzer.getIssueCount();
     	output.insert(0, String.format("Count of Issues = %d%n", countOfIssues));
     	if (countOfIssues == 0) {
     		output.insert(0, "GO\n");

@@ -19,7 +19,8 @@ public class CommandLineExecutor {
       cmdOutput.append(String.format("%s%n", line));
     }
     int exitCode = process.waitFor();
-    assert exitCode == 0;
+    System.out.println("Exit code: "+exitCode);
+//    assert exitCode == 0;
     return cmdOutput;
   }
 }

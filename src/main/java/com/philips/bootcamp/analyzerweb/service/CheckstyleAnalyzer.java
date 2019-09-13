@@ -20,7 +20,7 @@ public class CheckstyleAnalyzer extends Tool{
   public CheckstyleAnalyzer(String filepath, String checkstylePath, String checkstyleRuleset) {
     super(filepath);
     this.checkstylePath = checkstylePath;
-    this.checkstyleRuleset = checkstyleRuleset;
+    this.checkstyleRuleset = checkstyleRuleset;    
   }
 
   public static CheckstyleAnalyzer getObjectFromConfigFile() {
@@ -34,7 +34,9 @@ public class CheckstyleAnalyzer extends Tool{
   public StringBuilder generateReport() throws FilePathNotValidException, IOException, InterruptedException {
     if (FileValidator.isValidPath(filepath)) {
       final String[] cmdCommand = {"java", "-jar", checkstylePath, "-c", checkstyleRuleset, filepath};
-      return new StringBuilder(CommandLineExecutor.runShellCommand(cmdCommand));
+      StringBuilder outputReport = new StringBuilder(CommandLineExecutor.runShellCommand(cmdCommand));
+      issueCount = countIssues(outputReport, this);
+      return outputReport;
     } else {
       throw new FilePathNotValidException("Error: incorrect path/file not found"); 
     }    
@@ -48,8 +50,16 @@ public class CheckstyleAnalyzer extends Tool{
     builder.append(checkstylePath);
     builder.append(",");
     builder.append(checkstyleRuleset);
+    builder.append(",");
+    builder.append(issueCount);
 
     return builder.toString();
+  }
+
+  @Override
+  public int countIssues(StringBuilder report, Tool tool) {
+    String[] lines = report.toString().split("\r\n|\r|\n");
+    return lines.length - 2;
   }
 
 }
