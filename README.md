@@ -5,6 +5,9 @@ A reworked version of the static-code-analyzer with web API
 ## Project Overview
 This web application is an integration of the various static code analysis tools which generates a unified report for a given file/file directory. Using API calls we can obtain the various issues present in the code based on the tool used. A GO or NO-GO status is provided when all the issues in the code are cleared or not.
 
+## Standards 
+The code coverage is 85% 
+
 ## Tools Used
 Checkstyle, PMD, Simian tool
 
