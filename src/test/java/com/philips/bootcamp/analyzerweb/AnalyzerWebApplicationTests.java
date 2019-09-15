@@ -3,19 +3,27 @@
  */
 package com.philips.bootcamp.analyzerweb;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 import com.philips.bootcamp.analyzerweb.exceptions.FilePathNotValidException;
 import com.philips.bootcamp.analyzerweb.service.CheckstyleAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.IntegratedAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.PmdAnalyzer;
 import com.philips.bootcamp.analyzerweb.service.SimilarityAnalyzer;
 import com.philips.bootcamp.analyzerweb.utils.JavaFileLister;
+import com.philips.bootcamp.analyzerweb.utils.PathEncoder;
 import com.philips.bootcamp.analyzerweb.utils.Values;
 
 @RunWith(SpringRunner.class)
@@ -106,4 +114,69 @@ public class AnalyzerWebApplicationTests {
     final List<String> fileList=jfl.javaFilefilter(Values.TEST_INVALID_FILE_PATH);
     assertTrue(fileList.size()== 0);
   }
+
+  @Test
+  public void generateReport_APIController_PmdAnalyzer_ValidFilePath_GenerateWithOKSTatus() throws Exception {
+    final String testUri = "/api/pmd/?path=" + PathEncoder.encodeURI(Values.TEST_VALID_FILE_PATH);
+    final RestTemplate restTemplate = new RestTemplate();
+    final String baseUrl = "http://localhost:8080" + testUri;
+    final URI uri = new URI(baseUrl);
+    final ResponseEntity<String> result = restTemplate.getForEntity(uri, String.class);
+    assertEquals(200, result.getStatusCodeValue());
+  }
+
+  @Test
+  public void generateReport_APIController_CheckstyleAnalyzer_ValidFilePath_GenerateWithOKSTatus() throws Exception {
+    final String testUri = "/api/cs/?path=" + PathEncoder.encodeURI(Values.TEST_VALID_FILE_PATH);
+    final RestTemplate restTemplate = new RestTemplate();
+    final String baseUrl = "http://localhost:8080" + testUri;
+    final URI uri = new URI(baseUrl);
+    final ResponseEntity<String> result = restTemplate.getForEntity(uri, String.class);
+    assertEquals(200, result.getStatusCodeValue());
+  }
+
+  @Test(expected = HttpClientErrorException.class)
+  public void generateReport_APIController_PmdAnalyzer_InvalidFilePath_GenerateWith404STatus() throws UnsupportedEncodingException, URISyntaxException {
+    final String testUri = "/api/pmd/?path=" + PathEncoder.encodeURI(Values.TEST_INVALID_FILE_PATH);
+    final RestTemplate restTemplate = new RestTemplate();
+    final String baseUrl = "http://localhost:8080" + testUri;
+    final URI uri = new URI(baseUrl);
+    ResponseEntity<String> result = null;
+    result = restTemplate.getForEntity(uri, String.class);
+    assertEquals(404, result.getStatusCodeValue());
+  }
+
+  @Test(expected = HttpClientErrorException.class)
+  public void generateReport_APIController_CheckstyleAnalyzer_InvalidFilePath_GenerateWith404STatus() throws UnsupportedEncodingException, URISyntaxException {
+    final String testUri = "/api/cs/?path=" + PathEncoder.encodeURI(Values.TEST_INVALID_FILE_PATH);
+    final RestTemplate restTemplate = new RestTemplate();
+    final String baseUrl = "http://localhost:8080" + testUri;
+    final URI uri = new URI(baseUrl);
+    ResponseEntity<String> result = null;
+    result = restTemplate.getForEntity(uri, String.class);
+    assertEquals(404, result.getStatusCodeValue());
+  }
+
+  @Test
+  public void generateReport_APIController_DuplicationAnalyzer_ValidFilePath_GenerateWithOKSTatus() throws Exception {
+    final String testUri = "/api/sim/?path=" + PathEncoder.encodeURI(Values.TEST_VALID_FILE_PATH);
+    final RestTemplate restTemplate = new RestTemplate();
+    final String baseUrl = "http://localhost:8080" + testUri;
+    final URI uri = new URI(baseUrl);
+    final ResponseEntity<String> result = restTemplate.getForEntity(uri, String.class);
+    assertEquals(200, result.getStatusCodeValue());
+  }
+
+  @Test(expected = HttpClientErrorException.class)
+  public void generateReport_APIController_DuplicationAnalyzer_InvalidFilePath_GenerateWith404STatus() throws UnsupportedEncodingException, URISyntaxException {
+    final String testUri = "/api/sim/?path=" + PathEncoder.encodeURI(Values.TEST_INVALID_FILE_PATH);
+    final RestTemplate restTemplate = new RestTemplate();
+    final String baseUrl = "http://localhost:8080" + testUri;
+    final URI uri = new URI(baseUrl);
+    ResponseEntity<String> result = null;
+    result = restTemplate.getForEntity(uri, String.class);
+    assertEquals(404, result.getStatusCodeValue());
+  }
+
+
 }
